@@ -12,6 +12,7 @@ export const HourInput = (props: Props) => {
     <td>
       <div>
         <button
+          className="index-button"
           onClick={() => {
             handleHourInput(project.id, Number(project.time[0][dayKey]) - 1, dayKey);
           }}
@@ -27,6 +28,7 @@ export const HourInput = (props: Props) => {
           }}
         />
         <button
+          className="index-button"
           onClick={() => {
             handleHourInput(project.id, Number(project.time[0][dayKey]) + 1, dayKey);
           }}

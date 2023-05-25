@@ -10,15 +10,17 @@ export function Form(props: Props) {
   const { createNewProject, handleNewProjectName, projectName, handleNewTargetHours, targetHours } =
     props;
   return (
-    <div>
+    <>
       <form onSubmit={(e) => createNewProject(e)}>
         <input
+          className="new-project-name-input"
           placeholder="enter new project name"
           type="text"
           onChange={handleNewProjectName}
           value={projectName}
         ></input>
         <input
+          className="new-target-hour-input"
           onChange={handleNewTargetHours}
           value={targetHours !== 0 ? targetHours : ""}
           placeholder="enter target hours"
@@ -26,6 +28,6 @@ export function Form(props: Props) {
         ></input>
         <button type="submit">Add</button>
       </form>
-    </div>
+    </>
   );
 }

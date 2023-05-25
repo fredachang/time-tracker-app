@@ -33,16 +33,39 @@ export function Table(props: Props) {
       <table>
         <thead>
           <tr>
-            <th>Day</th>
-            {projects.map((project) => (
+            <th className="column-1">Day</th>
+            {projects.map((project, index) => (
               <th key={project.id}>
-                <input
-                  type="text"
-                  value={project.title}
-                  onChange={(e) => {
-                    updateProjectName(project.id, e.target.value);
-                  }}
-                />
+                <div className="project-title-field-container">
+                  {index > 0 ? (
+                    <button
+                      className="index-button"
+                      onClick={() => moveColumnToLeft(projects, project.id)}
+                    >
+                      &#8592;
+                    </button>
+                  ) : (
+                    <div className="empty-button"></div>
+                  )}
+                  <input
+                    className="project-title"
+                    type="text"
+                    value={project.title}
+                    onChange={(e) => {
+                      updateProjectName(project.id, e.target.value);
+                    }}
+                  />
+                  {index < projects.length - 1 ? (
+                    <button
+                      className="index-button"
+                      onClick={() => moveColumnToRight(projects, project.id)}
+                    >
+                      &#8594;
+                    </button>
+                  ) : (
+                    <div className="empty-button"></div>
+                  )}
+                </div>
               </th>
             ))}
           </tr>
@@ -50,11 +73,12 @@ export function Table(props: Props) {
 
         <tbody>
           <tr>
-            <td>Target Hours</td>
+            <td className="column-1">Target Hours</td>
             {projects.map((project) => (
               <td key={project.id}>
                 <div>
                   <button
+                    className="index-button"
                     onClick={() => {
                       updateTargetHours(project.id, project.targetHours - 1);
                     }}
@@ -69,6 +93,7 @@ export function Table(props: Props) {
                     }}
                   />
                   <button
+                    className="index-button"
                     onClick={() => {
                       updateTargetHours(project.id, project.targetHours + 1);
                     }}
@@ -81,7 +106,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td>Monday</td>
+            <td className="column-1">Monday</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -93,7 +118,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td>Tuesday</td>
+            <td className="column-1">Tuesday</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -105,7 +130,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td>Wednesday</td>
+            <td className="column-1">Wednesday</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -117,7 +142,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td>Thursday</td>
+            <td className="column-1">Thursday</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -129,7 +154,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td>Friday</td>
+            <td className="column-1">Friday</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -141,7 +166,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td>Saturday</td>
+            <td className="column-1">Saturday</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -153,7 +178,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td>Sunday</td>
+            <td className="column-1">Sunday</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -166,14 +191,14 @@ export function Table(props: Props) {
         </tbody>
         <tfoot>
           <tr>
-            <td>Total</td>
+            <td className="column-1">Total</td>
             {projects.map((project) => (
               <td key={project.id}>{calculateTotalHours(project)}</td>
             ))}
           </tr>
 
           <tr>
-            <td>Remaining</td>
+            <td className="column-1">Remaining</td>
             {projects.map((project) => (
               <td key={project.id}>
                 {Math.max(calculateRemainingHours(project), 0) || "All Done!"}
@@ -182,22 +207,12 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td>Actions</td>
-            {projects.map((project, index) => (
+            <td className="column-1"></td>
+            {projects.map((project) => (
               <td key={project.id}>
-                <button onClick={() => deleteProject(project.id)}>Delete</button>
-                <button onClick={() => clearProjectHours(project.id)}>Clear Project Hours</button>
-                <div>
-                  {index > 0 && (
-                    <button onClick={() => moveColumnToLeft(projects, project.id)}>
-                      Move To Left
-                    </button>
-                  )}
-                  {index < projects.length - 1 && (
-                    <button onClick={() => moveColumnToRight(projects, project.id)}>
-                      Move To Right
-                    </button>
-                  )}
+                <div className="actions-button-container">
+                  <button onClick={() => clearProjectHours(project.id)}>Clear</button>
+                  <button onClick={() => deleteProject(project.id)}>Delete</button>
                 </div>
               </td>
             ))}

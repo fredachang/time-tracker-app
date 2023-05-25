@@ -6,6 +6,7 @@ import { PieChart } from "./components/PieChart";
 import { useLocalStorage } from "react-use";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
+import logo from "./assets/Logo.svg";
 
 function App() {
   const [projects, setProjects] = useLocalStorage<Project[]>("projects", initialProjects);
@@ -35,7 +36,7 @@ function App() {
 
   const makePieChartData = (project: Project) => {
     const pieChartData = {
-      labels: ["Total", "Remaining"],
+      labels: [],
       datasets: [
         {
           label: "number of hours",
@@ -180,44 +181,64 @@ function App() {
 
   return (
     <>
-      <Form
-        createNewProject={createNewProject}
-        handleNewProjectName={handleNewProjectName}
-        projectName={projectNameDefault}
-        handleNewTargetHours={handleNewTargetHours}
-        targetHours={targetHoursDefault}
-      />
+      <section className="header">
+        <div className="logo">
+          <img src={logo}></img>
+        </div>
+      </section>
 
-      <div className="section-pie-chart">
-        {projectsDeault.map((project) => {
-          const data = makePieChartData(project);
-          return (
-            <div key={project.id}>
-              <p>{project.title}</p>
-              <PieChart data={data} />
+      <section className="body">
+        <section className="section-pie-chart">
+          <h2>Dashboard</h2>
+          <div className="pie-chart-container">
+            {projectsDeault.map((project) => {
+              const data = makePieChartData(project);
+              return (
+                <div className="pie-chart-tile" key={project.id}>
+                  <h3>{project.title}</h3>
+                  <p>{calculateRemainingHours(project)} hours to go this week</p>
+                  <PieChart data={data} />
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="section-new-entries">
+          <h2>Entries</h2>
+          <div className="new-entries-form">
+            <Form
+              createNewProject={createNewProject}
+              handleNewProjectName={handleNewProjectName}
+              projectName={projectNameDefault}
+              handleNewTargetHours={handleNewTargetHours}
+              targetHours={targetHoursDefault}
+            />
+            <div>
+              <span>
+                {deleted && <button onClick={undoDeleteProject}>Undo Last Delete</button>}
+              </span>
+
+              <span>
+                <button onClick={clearAllHours}>Clear All Hours</button>
+              </span>
             </div>
-          );
-        })}
-      </div>
+          </div>
 
-      <div>
-        <button onClick={clearAllHours}>Clear All Hours</button>
-      </div>
-
-      <div>{deleted && <button onClick={undoDeleteProject}>Undo Last Delete</button>}</div>
-
-      <Table
-        projects={projectsDeault}
-        updateProjectName={updateProjectName}
-        updateTargetHours={updateTargetHours}
-        handleHourInput={handleHourInput}
-        calculateTotalHours={calculateTotalHours}
-        calculateRemainingHours={calculateRemainingHours}
-        deleteProject={deleteProject}
-        clearProjectHours={clearProjectHours}
-        moveColumnToLeft={moveColumnToLeft}
-        moveColumnToRight={moveColumnToRight}
-      />
+          <Table
+            projects={projectsDeault}
+            updateProjectName={updateProjectName}
+            updateTargetHours={updateTargetHours}
+            handleHourInput={handleHourInput}
+            calculateTotalHours={calculateTotalHours}
+            calculateRemainingHours={calculateRemainingHours}
+            deleteProject={deleteProject}
+            clearProjectHours={clearProjectHours}
+            moveColumnToLeft={moveColumnToLeft}
+            moveColumnToRight={moveColumnToRight}
+          />
+        </section>
+      </section>
     </>
   );
 }
