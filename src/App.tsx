@@ -180,8 +180,6 @@ function App() {
 
   return (
     <>
-      {console.log(projects)}
-
       <Form
         createNewProject={createNewProject}
         handleNewProjectName={handleNewProjectName}
