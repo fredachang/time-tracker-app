@@ -5,15 +5,19 @@ import { Project } from "./data";
 import { PieChart } from "./components/PieChart";
 import { useLocalStorage } from "react-use";
 import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 
 function App() {
   const [projects, setProjects] = useLocalStorage<Project[]>("projects", initialProjects);
   const [projectName, setProjectName] = useLocalStorage<string>("projectName", "");
   const [targetHours, setTargetHours] = useLocalStorage<number>("targetHours", 0);
+  const [deletedProjects, setDeletedProjects] = useLocalStorage<Project[]>("deletedProjects", []);
+  const [deleted, setDeleted] = useState<boolean>(false);
 
   const projectsDeault = projects ?? initialProjects;
   const projectNameDefault = projectName ?? "";
   const targetHoursDefault = targetHours ?? 0;
+  const deletedProjectsDefault = deletedProjects ?? [];
 
   function calculateTotalHours(project: Project) {
     const time = project.time[0];
@@ -118,7 +122,21 @@ function App() {
   };
 
   const deleteProject = (id: string) => {
-    setProjects(projectsDeault.filter((project) => project.id !== id));
+    const projectToDelete = projectsDeault.find((project) => project.id === id);
+    if (projectToDelete) {
+      setDeletedProjects([...deletedProjectsDefault, projectToDelete]);
+      setProjects(projectsDeault.filter((project) => project.id !== id));
+      setDeleted(true);
+    }
+  };
+
+  const undoDeleteProject = () => {
+    const lastDeletedProject = deletedProjectsDefault.pop();
+    if (lastDeletedProject) {
+      setProjects([...projectsDeault, lastDeletedProject]);
+      setDeletedProjects([...deletedProjectsDefault]);
+      setDeleted(false);
+    }
   };
 
   const clearAllHours = () => {
@@ -142,8 +160,28 @@ function App() {
     setProjects(updatedProjects);
   };
 
+  const moveColumnToLeft = (projects: Project[], id: string) => {
+    const objectIndex = projects.findIndex((obj) => obj.id === id);
+    if (objectIndex > 0) {
+      const objectToMove = projects.splice(objectIndex, 1)[0];
+      projects.splice(objectIndex - 1, 0, objectToMove);
+    }
+    setProjects(projects);
+  };
+
+  const moveColumnToRight = (projects: Project[], id: string) => {
+    const objectIndex = projects.findIndex((obj) => obj.id === id);
+    if (objectIndex > -1 && objectIndex < projects.length - 1) {
+      const objectToMove = projects.splice(objectIndex, 1)[0];
+      projects.splice(objectIndex + 1, 0, objectToMove);
+    }
+    setProjects(projects);
+  };
+
   return (
     <>
+      {console.log(projects)}
+
       <Form
         createNewProject={createNewProject}
         handleNewProjectName={handleNewProjectName}
@@ -151,10 +189,6 @@ function App() {
         handleNewTargetHours={handleNewTargetHours}
         targetHours={targetHoursDefault}
       />
-
-      <div>
-        <button onClick={clearAllHours}>Clear All Hours</button>
-      </div>
 
       <div className="section-pie-chart">
         {projectsDeault.map((project) => {
@@ -168,6 +202,12 @@ function App() {
         })}
       </div>
 
+      <div>
+        <button onClick={clearAllHours}>Clear All Hours</button>
+      </div>
+
+      <div>{deleted && <button onClick={undoDeleteProject}>Undo Last Delete</button>}</div>
+
       <Table
         projects={projectsDeault}
         updateProjectName={updateProjectName}
@@ -177,6 +217,8 @@ function App() {
         calculateRemainingHours={calculateRemainingHours}
         deleteProject={deleteProject}
         clearProjectHours={clearProjectHours}
+        moveColumnToLeft={moveColumnToLeft}
+        moveColumnToRight={moveColumnToRight}
       />
     </>
   );

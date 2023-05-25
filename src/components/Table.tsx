@@ -11,6 +11,8 @@ interface Props {
   calculateRemainingHours: (project: Project) => number;
   deleteProject: (id: string) => void;
   clearProjectHours: (id: string) => void;
+  moveColumnToLeft: (project: Project[], id: string) => void;
+  moveColumnToRight: (project: Project[], id: string) => void;
 }
 export function Table(props: Props) {
   const {
@@ -22,6 +24,8 @@ export function Table(props: Props) {
     calculateRemainingHours,
     deleteProject,
     clearProjectHours,
+    moveColumnToLeft,
+    moveColumnToRight,
   } = props;
 
   return (
@@ -179,10 +183,22 @@ export function Table(props: Props) {
 
           <tr>
             <td>Actions</td>
-            {projects.map((project) => (
+            {projects.map((project, index) => (
               <td key={project.id}>
                 <button onClick={() => deleteProject(project.id)}>Delete</button>
                 <button onClick={() => clearProjectHours(project.id)}>Clear Project Hours</button>
+                <div>
+                  {index > 0 && (
+                    <button onClick={() => moveColumnToLeft(projects, project.id)}>
+                      Move To Left
+                    </button>
+                  )}
+                  {index < projects.length - 1 && (
+                    <button onClick={() => moveColumnToRight(projects, project.id)}>
+                      Move To Right
+                    </button>
+                  )}
+                </div>
               </td>
             ))}
           </tr>
