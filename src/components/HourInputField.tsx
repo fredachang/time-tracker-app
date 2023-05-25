@@ -2,7 +2,7 @@ import { DayKey, Project } from "../data";
 
 interface Props {
   project: Project;
-  handleHourInput: (id: number, newHours: number, dayKey: DayKey) => void;
+  handleHourInput: (id: string, newHours: number, dayKey: DayKey) => void;
   dayKey: DayKey;
 }
 

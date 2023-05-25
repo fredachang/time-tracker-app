@@ -1,5 +1,7 @@
+import { v4 as uuidv4 } from "uuid";
+
 export interface Project {
-  id: number;
+  id: string;
   title: string;
   targetHours: number;
   time: {
@@ -34,13 +36,13 @@ export const weekDefault = {
 
 export const initialProjects = [
   {
-    id: 1,
+    id: uuidv4(),
     title: "Test Project 1",
     targetHours: 10,
     time: [weekDefault],
   },
   {
-    id: 2,
+    id: uuidv4(),
     title: "Test Project 2",
     targetHours: 10,
     time: [weekDefault],

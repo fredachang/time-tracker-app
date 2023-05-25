@@ -1,25 +1,14 @@
 interface Props {
-  createNewProject: (
-    e: React.FormEvent<HTMLFormElement>
-  ) => void;
-  handleNewProjectName: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  createNewProject: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleNewProjectName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   projectName: string;
-  handleNewTargetHours: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  handleNewTargetHours: (e: React.ChangeEvent<HTMLInputElement>) => void;
   targetHours: number;
 }
 
 export function Form(props: Props) {
-  const {
-    createNewProject,
-    handleNewProjectName,
-    projectName,
-    handleNewTargetHours,
-    targetHours,
-  } = props;
+  const { createNewProject, handleNewProjectName, projectName, handleNewTargetHours, targetHours } =
+    props;
   return (
     <div>
       <form onSubmit={(e) => createNewProject(e)}>
@@ -31,9 +20,7 @@ export function Form(props: Props) {
         ></input>
         <input
           onChange={handleNewTargetHours}
-          value={
-            targetHours !== 0 ? targetHours : ""
-          }
+          value={targetHours !== 0 ? targetHours : ""}
           placeholder="enter target hours"
           type="number"
         ></input>
