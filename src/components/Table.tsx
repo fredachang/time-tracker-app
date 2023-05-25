@@ -4,13 +4,13 @@ import { HourInput } from "./HourInputField";
 
 interface Props {
   projects: Project[];
-  updateProjectName: (id: number, newName: string) => void;
-  updateTargetHours: (id: number, newTarget: number) => void;
-  handleHourInput: (id: number, newHours: number, dayKey: DayKey) => void;
+  updateProjectName: (id: string, newName: string) => void;
+  updateTargetHours: (id: string, newTarget: number) => void;
+  handleHourInput: (id: string, newHours: number, dayKey: DayKey) => void;
   calculateTotalHours: (project: Project) => number;
   calculateRemainingHours: (project: Project) => number;
-  deleteProject: (id: number) => void;
-  clearProjectHours: (id: number) => void;
+  deleteProject: (id: string) => void;
+  clearProjectHours: (id: string) => void;
 }
 export function Table(props: Props) {
   const {
