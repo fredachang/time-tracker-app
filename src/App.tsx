@@ -9,10 +9,22 @@ import { useState } from "react";
 import logo from "./assets/Logo.svg";
 
 function App() {
-  const [projects, setProjects] = useLocalStorage<Project[]>("projects", initialProjects);
-  const [projectName, setProjectName] = useLocalStorage<string>("projectName", "");
-  const [targetHours, setTargetHours] = useLocalStorage<number>("targetHours", 0);
-  const [deletedProjects, setDeletedProjects] = useLocalStorage<Project[]>("deletedProjects", []);
+  const [projects, setProjects] = useLocalStorage<Project[]>(
+    "projects",
+    initialProjects
+  );
+  const [projectName, setProjectName] = useLocalStorage<string>(
+    "projectName",
+    ""
+  );
+  const [targetHours, setTargetHours] = useLocalStorage<number>(
+    "targetHours",
+    0
+  );
+  const [deletedProjects, setDeletedProjects] = useLocalStorage<Project[]>(
+    "deletedProjects",
+    []
+  );
   const [deleted, setDeleted] = useState<boolean>(false);
 
   const projectsDeault = projects ?? initialProjects;
@@ -23,9 +35,12 @@ function App() {
   function calculateTotalHours(project: Project) {
     const time = project.time[0];
 
-    const totalHours = Object.values(time).reduce((total: number, hour: number | "") => {
-      return total + (hour !== "" ? hour : 0);
-    }, 0);
+    const totalHours = Object.values(time).reduce(
+      (total: number, hour: number | "") => {
+        return total + (hour !== "" ? hour : 0);
+      },
+      0
+    );
     return totalHours;
   }
 
@@ -40,7 +55,10 @@ function App() {
       datasets: [
         {
           label: "number of hours",
-          data: [calculateTotalHours(project), calculateRemainingHours(project)],
+          data: [
+            calculateTotalHours(project),
+            calculateRemainingHours(project),
+          ],
           backgroundColor: ["black", "white"],
           borderColor: ["black", "black"],
           borderWidth: 0.5,
@@ -104,7 +122,10 @@ function App() {
   const handleHourInput = (id: string, newHours: number, dayKey: DayKey) => {
     if (isNaN(newHours)) {
       newHours = 0;
+    } else {
+      newHours = Math.round(newHours * 2) / 2; // Round to the nearest 0.5
     }
+
     const updatedProjects = projectsDeault.map((project) => {
       if (project.id === id) {
         return {
@@ -119,8 +140,30 @@ function App() {
       }
       return project;
     });
+
     setProjects(updatedProjects);
   };
+
+  // const handleHourInput = (id: string, newHours: number, dayKey: DayKey) => {
+  //   if (isNaN(newHours)) {
+  //     newHours = 0;
+  //   }
+  //   const updatedProjects = projectsDeault.map((project) => {
+  //     if (project.id === id) {
+  //       return {
+  //         ...project,
+  //         time: [
+  //           {
+  //             ...project.time[0],
+  //             [dayKey]: newHours,
+  //           },
+  //         ],
+  //       };
+  //     }
+  //     return project;
+  //   });
+  //   setProjects(updatedProjects);
+  // };
 
   const deleteProject = (id: string) => {
     const projectToDelete = projectsDeault.find((project) => project.id === id);
@@ -196,7 +239,9 @@ function App() {
               return (
                 <div className="pie-chart-tile" key={project.id}>
                   <h3>{project.title}</h3>
-                  <p>{calculateRemainingHours(project)} hours to go this week</p>
+                  <p>
+                    {calculateRemainingHours(project)} hours to go this week
+                  </p>
                   <PieChart data={data} />
                 </div>
               );
@@ -216,7 +261,9 @@ function App() {
             />
             <div>
               <span>
-                {deleted && <button onClick={undoDeleteProject}>Undo Last Delete</button>}
+                {deleted && (
+                  <button onClick={undoDeleteProject}>Undo Last Delete</button>
+                )}
               </span>
 
               <span>

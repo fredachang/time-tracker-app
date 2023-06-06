@@ -14,23 +14,32 @@ export const HourInput = (props: Props) => {
         <button
           className="index-button"
           onClick={() => {
-            handleHourInput(project.id, Number(project.time[0][dayKey]) - 1, dayKey);
+            handleHourInput(
+              project.id,
+              Number(project.time[0][dayKey]) - 0.5,
+              dayKey
+            );
           }}
         >
           -
         </button>
         <input
           type="number"
+          step="0.5"
           placeholder="enter hours"
           value={project.time[0][dayKey] !== 0 ? project.time[0][dayKey] : ""}
           onChange={(e) => {
-            handleHourInput(project.id, parseInt(e.target.value, 10), dayKey);
+            handleHourInput(project.id, parseFloat(e.target.value), dayKey);
           }}
         />
         <button
           className="index-button"
           onClick={() => {
-            handleHourInput(project.id, Number(project.time[0][dayKey]) + 1, dayKey);
+            handleHourInput(
+              project.id,
+              Number(project.time[0][dayKey]) + 0.5,
+              dayKey
+            );
           }}
         >
           +

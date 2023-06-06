@@ -47,6 +47,7 @@ export function Table(props: Props) {
                   ) : (
                     <div className="empty-button"></div>
                   )}
+
                   <input
                     className="project-title"
                     type="text"
@@ -55,6 +56,7 @@ export function Table(props: Props) {
                       updateProjectName(project.id, e.target.value);
                     }}
                   />
+
                   {index < projects.length - 1 ? (
                     <button
                       className="index-button"
@@ -80,7 +82,7 @@ export function Table(props: Props) {
                   <button
                     className="index-button"
                     onClick={() => {
-                      updateTargetHours(project.id, project.targetHours - 1);
+                      updateTargetHours(project.id, project.targetHours - 0.5);
                     }}
                   >
                     -
@@ -89,13 +91,16 @@ export function Table(props: Props) {
                     type="number"
                     value={project.targetHours}
                     onChange={(e) => {
-                      updateTargetHours(project.id, parseInt(e.target.value, 10));
+                      updateTargetHours(
+                        project.id,
+                        parseInt(e.target.value, 10)
+                      );
                     }}
                   />
                   <button
                     className="index-button"
                     onClick={() => {
-                      updateTargetHours(project.id, project.targetHours + 1);
+                      updateTargetHours(project.id, project.targetHours + 0.5);
                     }}
                   >
                     +
@@ -111,7 +116,9 @@ export function Table(props: Props) {
               <HourInput
                 key={project.id}
                 project={project}
-                handleHourInput={(id, newHours, dayKey) => handleHourInput(id, newHours, dayKey)}
+                handleHourInput={(id, newHours, dayKey) =>
+                  handleHourInput(id, newHours, dayKey)
+                }
                 dayKey="Monday"
               />
             ))}
@@ -123,7 +130,9 @@ export function Table(props: Props) {
               <HourInput
                 key={project.id}
                 project={project}
-                handleHourInput={(id, newHours, dayKey) => handleHourInput(id, newHours, dayKey)}
+                handleHourInput={(id, newHours, dayKey) =>
+                  handleHourInput(id, newHours, dayKey)
+                }
                 dayKey="Tuesday"
               />
             ))}
@@ -135,7 +144,9 @@ export function Table(props: Props) {
               <HourInput
                 key={project.id}
                 project={project}
-                handleHourInput={(id, newHours, dayKey) => handleHourInput(id, newHours, dayKey)}
+                handleHourInput={(id, newHours, dayKey) =>
+                  handleHourInput(id, newHours, dayKey)
+                }
                 dayKey="Wednesday"
               />
             ))}
@@ -147,7 +158,9 @@ export function Table(props: Props) {
               <HourInput
                 key={project.id}
                 project={project}
-                handleHourInput={(id, newHours, dayKey) => handleHourInput(id, newHours, dayKey)}
+                handleHourInput={(id, newHours, dayKey) =>
+                  handleHourInput(id, newHours, dayKey)
+                }
                 dayKey="Thursday"
               />
             ))}
@@ -159,7 +172,9 @@ export function Table(props: Props) {
               <HourInput
                 key={project.id}
                 project={project}
-                handleHourInput={(id, newHours, dayKey) => handleHourInput(id, newHours, dayKey)}
+                handleHourInput={(id, newHours, dayKey) =>
+                  handleHourInput(id, newHours, dayKey)
+                }
                 dayKey="Friday"
               />
             ))}
@@ -171,7 +186,9 @@ export function Table(props: Props) {
               <HourInput
                 key={project.id}
                 project={project}
-                handleHourInput={(id, newHours, dayKey) => handleHourInput(id, newHours, dayKey)}
+                handleHourInput={(id, newHours, dayKey) =>
+                  handleHourInput(id, newHours, dayKey)
+                }
                 dayKey="Saturday"
               />
             ))}
@@ -183,7 +200,9 @@ export function Table(props: Props) {
               <HourInput
                 key={project.id}
                 project={project}
-                handleHourInput={(id, newHours, dayKey) => handleHourInput(id, newHours, dayKey)}
+                handleHourInput={(id, newHours, dayKey) =>
+                  handleHourInput(id, newHours, dayKey)
+                }
                 dayKey="Sunday"
               />
             ))}
@@ -211,8 +230,12 @@ export function Table(props: Props) {
             {projects.map((project) => (
               <td key={project.id}>
                 <div className="actions-button-container">
-                  <button onClick={() => clearProjectHours(project.id)}>Clear</button>
-                  <button onClick={() => deleteProject(project.id)}>Delete</button>
+                  <button onClick={() => clearProjectHours(project.id)}>
+                    Clear
+                  </button>
+                  <button onClick={() => deleteProject(project.id)}>
+                    Delete
+                  </button>
                 </div>
               </td>
             ))}
