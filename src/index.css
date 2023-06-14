@@ -1,58 +1,42 @@
 @font-face {
   font-family: "Fragment-Sans-Light";
-  src: local("Fragment"), url("./fonts/PPFragment-SansLight.otf") format("truetype");
+  src: local("Fragment"),
+    url("./fonts/PPFragment-SansLight.otf") format("truetype");
 }
 
 @font-face {
   font-family: "Fragment-Sans-Regular";
-  src: local("Fragment"), url("./fonts/PPFragment-SansRegular.otf") format("truetype");
+  src: local("Fragment"),
+    url("./fonts/PPFragment-SansRegular.otf") format("truetype");
 }
 
 @font-face {
   font-family: "Fragment-Sans-Bold";
-  src: local("Fragment"), url("./fonts/PPFragment-SansExtraBold.otf") format("truetype");
+  src: local("Fragment"),
+    url("./fonts/PPFragment-SansExtraBold.otf") format("truetype");
 }
 
 @font-face {
   font-family: "Fragment-Serif-Regular";
-  src: local("Fragment"), url("./fonts/PPFragment-SerifRegular.otf") format("truetype");
+  src: local("Fragment"),
+    url("./fonts/PPFragment-SerifRegular.otf") format("truetype");
 }
 
 @font-face {
   font-family: "Fragment-Serif-Light";
-  src: local("Fragment"), url("./fonts/PPFragment-SerifLight.otf") format("truetype");
+  src: local("Fragment"),
+    url("./fonts/PPFragment-SerifLight.otf") format("truetype");
 }
 
 @font-face {
   font-family: "Fragment-Serif-Bold";
-  src: local("Fragment"), url("./fonts/PPFragment-SerifExtraBold.otf") format("truetype");
+  src: local("Fragment"),
+    url("./fonts/PPFragment-SerifExtraBold.otf") format("truetype");
 }
 
 body {
   background-color: rgb(250, 250, 250);
   margin: 0;
-}
-
-.header {
-  font-family: "Fragment-Serif-Regular";
-  background-color: black;
-  width: 50px;
-  height: 100%;
-  display: flex;
-  position: fixed;
-  left: 0;
-}
-
-.logo {
-  position: fixed;
-  bottom: 0;
-  width: 50px;
-  height: 600px;
-}
-
-img {
-  position: absolute;
-  bottom: 0;
 }
 
 h1 {
@@ -67,6 +51,7 @@ h1 {
   width: 90%;
   position: absolute;
   right: 10px;
+  margin: 10px;
 }
 
 h2 {
@@ -81,6 +66,12 @@ h3 {
 
 p {
   font-family: "Fragment-Sans-Light";
+}
+
+.canvas {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
 }
 
 .section-pie-chart {
@@ -101,6 +92,7 @@ p {
   margin-bottom: 10px;
   border: 0.5px solid black;
   border-radius: 0.7rem;
+  background-color: rgba(1, 134, 4, 20%);
 }
 
 .pie-chart {

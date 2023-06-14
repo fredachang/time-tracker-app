@@ -17,6 +17,7 @@ interface Props {
 
 export function PieChart(props: Props) {
   const { data } = props;
+
   return (
     <div className="pie-chart">
       <div className="donut">

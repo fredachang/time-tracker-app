@@ -6,7 +6,8 @@ import { PieChart } from "./components/PieChart";
 import { useLocalStorage } from "react-use";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
-import logo from "./assets/Logo.svg";
+import { Backdrop } from "./components/Backdrop";
+import Tilt from "react-parallax-tilt";
 
 function App() {
   const [projects, setProjects] = useLocalStorage<Project[]>(
@@ -224,11 +225,9 @@ function App() {
 
   return (
     <>
-      <section className="header">
-        <div className="logo">
-          <img src={logo}></img>
-        </div>
-      </section>
+      <div className="canvas">
+        <Backdrop />
+      </div>
 
       <section className="body">
         <section className="section-pie-chart">
@@ -237,13 +236,15 @@ function App() {
             {projectsDeault.map((project) => {
               const data = makePieChartData(project);
               return (
-                <div className="pie-chart-tile" key={project.id}>
-                  <h3>{project.title}</h3>
-                  <p>
-                    {calculateRemainingHours(project)} hours to go this week
-                  </p>
-                  <PieChart data={data} />
-                </div>
+                <Tilt key={project.id}>
+                  <div className="pie-chart-tile">
+                    <h3>{project.title}</h3>
+                    <p>
+                      {calculateRemainingHours(project)} hours to go this week
+                    </p>
+                    <PieChart data={data} />
+                  </div>
+                </Tilt>
               );
             })}
           </div>

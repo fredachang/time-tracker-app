@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^9.74.14",
+    "@react-three/fiber": "^8.13.3",
     "chart.js": "^4.3.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+    "react-parallax-tilt": "^1.7.146",
     "react-use": "^17.4.0",
     "uuid": "^9.0.0"
   },
