@@ -8,42 +8,68 @@ interface Props {
 
 export const HourInput = (props: Props) => {
   const { project, handleHourInput, dayKey } = props;
+
+  // const renderDividers = (hours: number) => {
+  //   const numDividers = hours / 0.5;
+  //   const dividers = [];
+
+  //   for (let i = 0; i < numDividers; i++) {
+  //     dividers.push(
+  //       <div className="time-marks" key={i}>
+  //         |
+  //       </div>
+  //     );
+  //   }
+
+  //   return dividers;
+  // };
+
+  const renderDividers = (hours: number) => {
+    const numDividers = hours / 0.5;
+    const dividers = [];
+
+    for (let i = 0; i < numDividers; i++) {
+      const divider = i % 2 === 0 ? "|" : ":"; // Alternate between "|" and ":"
+      dividers.push(
+        <div className="time-marks" key={i}>
+          {divider}
+        </div>
+      );
+    }
+
+    return dividers;
+  };
+
   return (
     <td>
-      <div>
-        <button
-          className="index-button"
-          onClick={() => {
-            handleHourInput(
-              project.id,
-              Number(project.time[0][dayKey]) - 0.5,
-              dayKey
-            );
-          }}
-        >
-          -
-        </button>
-        <input
-          type="number"
-          step="0.5"
-          placeholder="enter hours"
-          value={project.time[0][dayKey] !== 0 ? project.time[0][dayKey] : ""}
-          onChange={(e) => {
-            handleHourInput(project.id, parseFloat(e.target.value), dayKey);
-          }}
-        />
-        <button
-          className="index-button"
-          onClick={() => {
-            handleHourInput(
-              project.id,
-              Number(project.time[0][dayKey]) + 0.5,
-              dayKey
-            );
-          }}
-        >
-          +
-        </button>
+      <div className="td-container">
+        <div className="hour-input-field-container">
+          <button
+            className="index-button"
+            onClick={() => {
+              handleHourInput(
+                project.id,
+                Number(project.time[0][dayKey]) - 0.5,
+                dayKey
+              );
+            }}
+          >
+            -
+          </button>
+          {renderDividers(project.time[0][dayKey])}
+          <button
+            className="index-button"
+            onClick={() => {
+              handleHourInput(
+                project.id,
+                Number(project.time[0][dayKey]) + 0.5,
+                dayKey
+              );
+            }}
+          >
+            +
+          </button>
+        </div>
       </div>
     </td>
   );

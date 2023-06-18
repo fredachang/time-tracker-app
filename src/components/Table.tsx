@@ -1,5 +1,6 @@
 import { DayKey } from "../data";
 import { Project } from "../data";
+import { ClickButton } from "./ClickButton";
 import { HourInput } from "./HourInputField";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
   clearProjectHours: (id: string) => void;
   moveColumnToLeft: (project: Project[], id: string) => void;
   moveColumnToRight: (project: Project[], id: string) => void;
+  lightTheme: boolean;
 }
 export function Table(props: Props) {
   const {
@@ -26,7 +28,23 @@ export function Table(props: Props) {
     clearProjectHours,
     moveColumnToLeft,
     moveColumnToRight,
+    lightTheme,
   } = props;
+
+  const renderDividers = (hours: number) => {
+    const numDividers = hours / 0.5;
+    const dividers = [];
+
+    for (let i = 0; i < numDividers; i++) {
+      dividers.push(
+        <div className="time-marks" key={i}>
+          |
+        </div>
+      );
+    }
+
+    return dividers;
+  };
 
   return (
     <>
@@ -73,21 +91,34 @@ export function Table(props: Props) {
           </tr>
         </thead>
 
+        <div
+          className={
+            lightTheme ? "table-row-divider-light" : "table-row-divider-dark"
+          }
+        ></div>
+
         <tbody>
           <tr>
-            <td className="column-1">Target Hours</td>
+            <td className="column-1">TARGET HOURS</td>
             {projects.map((project) => (
               <td key={project.id}>
-                <div>
-                  <button
-                    className="index-button"
-                    onClick={() => {
-                      updateTargetHours(project.id, project.targetHours - 0.5);
-                    }}
-                  >
-                    -
-                  </button>
-                  <input
+                <div className="td-container">
+                  <div className="target-hour-input-field">
+                    <button
+                      className="index-button"
+                      onClick={() => {
+                        updateTargetHours(
+                          project.id,
+                          project.targetHours - 0.5
+                        );
+                      }}
+                    >
+                      -
+                    </button>
+
+                    {renderDividers(project.targetHours)}
+
+                    {/* <input
                     type="number"
                     value={project.targetHours}
                     onChange={(e) => {
@@ -96,22 +127,32 @@ export function Table(props: Props) {
                         parseInt(e.target.value, 10)
                       );
                     }}
-                  />
-                  <button
-                    className="index-button"
-                    onClick={() => {
-                      updateTargetHours(project.id, project.targetHours + 0.5);
-                    }}
-                  >
-                    +
-                  </button>
+                  /> */}
+                    <button
+                      className="index-button"
+                      onClick={() => {
+                        updateTargetHours(
+                          project.id,
+                          project.targetHours + 0.5
+                        );
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </td>
             ))}
           </tr>
 
+          <div
+            className={
+              lightTheme ? "table-row-divider-light" : "table-row-divider-dark"
+            }
+          ></div>
+
           <tr>
-            <td className="column-1">Monday</td>
+            <td className="column-1">MON</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -125,7 +166,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">Tuesday</td>
+            <td className="column-1">TUE</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -139,7 +180,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">Wednesday</td>
+            <td className="column-1">WED</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -153,7 +194,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">Thursday</td>
+            <td className="column-1">THU</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -167,7 +208,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">Friday</td>
+            <td className="column-1">FRI</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -181,7 +222,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">Saturday</td>
+            <td className="column-1">SAT</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -195,7 +236,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">Sunday</td>
+            <td className="column-1">SUN</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -208,16 +249,30 @@ export function Table(props: Props) {
             ))}
           </tr>
         </tbody>
+
+        <div
+          className={
+            lightTheme ? "table-row-divider-light" : "table-row-divider-dark"
+          }
+        ></div>
+
         <tfoot>
           <tr>
-            <td className="column-1">Total</td>
+            <td className="column-1">TARGET HOURS</td>
+            {projects.map((project) => (
+              <td key={project.id}>{project.targetHours}</td>
+            ))}
+          </tr>
+
+          <tr>
+            <td className="column-1">TOTAL HOURS</td>
             {projects.map((project) => (
               <td key={project.id}>{calculateTotalHours(project)}</td>
             ))}
           </tr>
 
           <tr>
-            <td className="column-1">Remaining</td>
+            <td className="column-1">REMAINING HOURS</td>
             {projects.map((project) => (
               <td key={project.id}>
                 {Math.max(calculateRemainingHours(project), 0) || "All Done!"}
@@ -230,12 +285,24 @@ export function Table(props: Props) {
             {projects.map((project) => (
               <td key={project.id}>
                 <div className="actions-button-container">
-                  <button onClick={() => clearProjectHours(project.id)}>
-                    Clear
-                  </button>
-                  <button onClick={() => deleteProject(project.id)}>
-                    Delete
-                  </button>
+                  <ClickButton
+                    text="DELETE"
+                    title="delete project"
+                    type="button"
+                    viewBox="-5 -5 60 60"
+                    svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5ZM8.05,8.05l33.9,33.9m0-33.9L8.05,41.95"
+                    lightTheme={lightTheme}
+                    onClick={() => deleteProject(project.id)}
+                  />
+                  <ClickButton
+                    text="CLEAR"
+                    title="clear project hours"
+                    type="button"
+                    viewBox="-5 -5 60 60"
+                    svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
+                    lightTheme={lightTheme}
+                    onClick={() => clearProjectHours(project.id)}
+                  />
                 </div>
               </td>
             ))}

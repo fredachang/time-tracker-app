@@ -5,13 +5,13 @@ export interface Project {
   title: string;
   targetHours: number;
   time: {
-    Monday: number | "";
-    Tuesday: number | "";
-    Wednesday: number | "";
-    Thursday: number | "";
-    Friday: number | "";
-    Saturday: number | "";
-    Sunday: number | "";
+    Monday: number;
+    Tuesday: number;
+    Wednesday: number;
+    Thursday: number;
+    Friday: number;
+    Saturday: number;
+    Sunday: number;
   }[];
 }
 

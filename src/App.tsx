@@ -6,8 +6,10 @@ import { PieChart } from "./components/PieChart";
 import { useLocalStorage } from "react-use";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
-import { Backdrop } from "./components/Backdrop";
 import Tilt from "react-parallax-tilt";
+import { Header } from "./components/Header";
+import { ClickButton } from "./components/ClickButton";
+import { Carousel, ScrollingCarousel } from "@trendyol-js/react-carousel";
 
 function App() {
   const [projects, setProjects] = useLocalStorage<Project[]>(
@@ -26,7 +28,9 @@ function App() {
     "deletedProjects",
     []
   );
-  const [deleted, setDeleted] = useState<boolean>(false);
+  const [deleted, setDeleted] = useState<boolean>(true);
+
+  const [lightTheme, setLightTheme] = useState<boolean>(true);
 
   const projectsDeault = projects ?? initialProjects;
   const projectNameDefault = projectName ?? "";
@@ -51,6 +55,18 @@ function App() {
   }
 
   const makePieChartData = (project: Project) => {
+    const dark = {
+      backgroundColor: ["rgba(0, 255, 0, 1)", "rgba(0, 0, 0, 1)"],
+      borderColor: ["rgba(0, 255, 0, 1)", "rgba(0, 255, 0, 1)"],
+    };
+
+    const light = {
+      backgroundColor: ["rgba(0, 0, 0, 1)", "rgba(0, 255, 0, 1)"],
+      borderColor: ["rgba(0, 0, 0, 1)", "rgba(0, 0, 0, 1)"],
+    };
+
+    const theme = lightTheme ? light : dark;
+
     const pieChartData = {
       labels: [],
       datasets: [
@@ -60,12 +76,13 @@ function App() {
             calculateTotalHours(project),
             calculateRemainingHours(project),
           ],
-          backgroundColor: ["black", "white"],
-          borderColor: ["black", "black"],
-          borderWidth: 0.5,
+          backgroundColor: theme.backgroundColor,
+          borderColor: theme.borderColor,
+          borderWidth: 1,
         },
       ],
     };
+
     return pieChartData;
   };
 
@@ -121,11 +138,7 @@ function App() {
   };
 
   const handleHourInput = (id: string, newHours: number, dayKey: DayKey) => {
-    if (isNaN(newHours)) {
-      newHours = 0;
-    } else {
-      newHours = Math.round(newHours * 2) / 2; // Round to the nearest 0.5
-    }
+    const hours = newHours === 0 ? 0 : Math.round(newHours * 2) / 2;
 
     const updatedProjects = projectsDeault.map((project) => {
       if (project.id === id) {
@@ -134,7 +147,7 @@ function App() {
           time: [
             {
               ...project.time[0],
-              [dayKey]: newHours,
+              [dayKey]: hours,
             },
           ],
         };
@@ -144,27 +157,6 @@ function App() {
 
     setProjects(updatedProjects);
   };
-
-  // const handleHourInput = (id: string, newHours: number, dayKey: DayKey) => {
-  //   if (isNaN(newHours)) {
-  //     newHours = 0;
-  //   }
-  //   const updatedProjects = projectsDeault.map((project) => {
-  //     if (project.id === id) {
-  //       return {
-  //         ...project,
-  //         time: [
-  //           {
-  //             ...project.time[0],
-  //             [dayKey]: newHours,
-  //           },
-  //         ],
-  //       };
-  //     }
-  //     return project;
-  //   });
-  //   setProjects(updatedProjects);
-  // };
 
   const deleteProject = (id: string) => {
     const projectToDelete = projectsDeault.find((project) => project.id === id);
@@ -223,70 +215,167 @@ function App() {
     setProjects(projects);
   };
 
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const sliderValue = event.target.value;
+    if (sliderValue === "0") {
+      setLightTheme(true);
+    } else {
+      setLightTheme(false);
+    }
+  };
+
   return (
     <>
-      <div className="canvas">
-        <Backdrop />
+      <div className="left-section-container">
+        <Header lightTheme={lightTheme} handleThemeChange={handleThemeChange} />
       </div>
 
-      <section className="body">
-        <section className="section-pie-chart">
-          <h2>Dashboard</h2>
-          <div className="pie-chart-container">
-            {projectsDeault.map((project) => {
-              const data = makePieChartData(project);
-              return (
-                <Tilt key={project.id}>
-                  <div className="pie-chart-tile">
-                    <h3>{project.title}</h3>
-                    <p>
-                      {calculateRemainingHours(project)} hours to go this week
-                    </p>
-                    <PieChart data={data} />
-                  </div>
-                </Tilt>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="section-new-entries">
-          <h2>Entries</h2>
-          <div className="new-entries-form">
+      <main className="right-section-container">
+        <section className="right-section-inner">
+          <section className="new-entries-section-container">
             <Form
               createNewProject={createNewProject}
               handleNewProjectName={handleNewProjectName}
               projectName={projectNameDefault}
               handleNewTargetHours={handleNewTargetHours}
               targetHours={targetHoursDefault}
+              lightTheme={lightTheme}
             />
-            <div>
+
+            <div className="utility-buttons">
               <span>
                 {deleted && (
-                  <button onClick={undoDeleteProject}>Undo Last Delete</button>
+                  <div>
+                    <ClickButton
+                      text="UNDO LAST DELETE"
+                      title="undo last delete"
+                      type="button"
+                      viewBox="-5 -5 60 60"
+                      svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
+                      lightTheme={lightTheme}
+                      onClick={() => undoDeleteProject}
+                    />
+                  </div>
                 )}
               </span>
 
               <span>
-                <button onClick={clearAllHours}>Clear All Hours</button>
+                <ClickButton
+                  text="CLEAR ALL"
+                  title="clear project hours"
+                  type="button"
+                  viewBox="-5 -5 60 60"
+                  svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
+                  lightTheme={lightTheme}
+                  onClick={() => clearAllHours}
+                />
               </span>
             </div>
-          </div>
+          </section>
 
-          <Table
-            projects={projectsDeault}
-            updateProjectName={updateProjectName}
-            updateTargetHours={updateTargetHours}
-            handleHourInput={handleHourInput}
-            calculateTotalHours={calculateTotalHours}
-            calculateRemainingHours={calculateRemainingHours}
-            deleteProject={deleteProject}
-            clearProjectHours={clearProjectHours}
-            moveColumnToLeft={moveColumnToLeft}
-            moveColumnToRight={moveColumnToRight}
-          />
+          <section className="section-pie-chart">
+            <div className="section-pie-chart-inner">
+              <div className="lined-gradient"></div>
+              <div className="pie-chart-container">
+                <ScrollingCarousel>
+                  {projectsDeault.map((project) => {
+                    const data = makePieChartData(project);
+                    return (
+                      <Tilt key={project.id}>
+                        <div
+                          className={
+                            lightTheme
+                              ? "pie-chart-tile-light"
+                              : "pie-chart-tile-dark"
+                          }
+                        >
+                          <div className="pie-chart-stats">
+                            <div
+                              className={
+                                lightTheme
+                                  ? "current-stat-light"
+                                  : "current-stat-dark"
+                              }
+                            >
+                              <p>Current - {calculateTotalHours(project)} </p>
+                            </div>
+                            <div
+                              className={
+                                lightTheme
+                                  ? "target-stat-light"
+                                  : "target-stat-dark"
+                              }
+                            >
+                              <p>Target - {project.targetHours}</p>
+                            </div>
+                          </div>
+                          <div className="pie-chart-with-number">
+                            <div className="pie-chart-remaining-hours">
+                              <h1>{calculateTotalHours(project)}</h1>
+                              <span>H</span>
+                            </div>
+                            <PieChart data={data} />
+
+                            <div
+                              className={
+                                lightTheme
+                                  ? "pie-chart-divider-left-light"
+                                  : "pie-chart-divider-left-dark"
+                              }
+                            ></div>
+
+                            <div
+                              className={
+                                lightTheme
+                                  ? "pie-chart-divider-right-light"
+                                  : "pie-chart-divider-right-dark"
+                              }
+                            ></div>
+
+                            <div
+                              className={
+                                lightTheme
+                                  ? "pie-chart-divider-bottom-light"
+                                  : "pie-chart-divider-bottom-dark"
+                              }
+                            ></div>
+                          </div>
+
+                          <div className="pie-chart-project-title">
+                            <h3>{project.title}</h3>
+                          </div>
+                        </div>
+                      </Tilt>
+                    );
+                  })}
+                </ScrollingCarousel>
+              </div>
+            </div>
+          </section>
+
+          <section className="section-table">
+            <div
+              className={
+                lightTheme ? "table-container-light" : "table-container-dark"
+              }
+            >
+              <Table
+                projects={projectsDeault}
+                updateProjectName={updateProjectName}
+                updateTargetHours={updateTargetHours}
+                handleHourInput={handleHourInput}
+                calculateTotalHours={calculateTotalHours}
+                calculateRemainingHours={calculateRemainingHours}
+                deleteProject={deleteProject}
+                clearProjectHours={clearProjectHours}
+                moveColumnToLeft={moveColumnToLeft}
+                moveColumnToRight={moveColumnToRight}
+                lightTheme={lightTheme}
+              />
+            </div>
+          </section>
         </section>
-      </section>
+      </main>
     </>
   );
 }
