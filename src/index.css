@@ -640,3 +640,43 @@ tfoot {
   height: 100%;
   width: 5px;
 }
+
+.animation-container-top {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.animation-container-bottom {
+  background-color: purple;
+  position: fixed;
+  z-index: 1000;
+  bottom: 0;
+  left: 0;
+}
+
+.animation-canvas-top {
+  padding: 0 7px;
+  position: fixed;
+  top: 0;
+}
+
+.animation-canvas-bottom {
+  padding: 0 7px;
+  position: fixed;
+  bottom: 0;
+}
+
+.circle-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+}
+
+.moving-circle-canvas {
+  background-color: transparent;
+}

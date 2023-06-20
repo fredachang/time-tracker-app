@@ -9,7 +9,11 @@ import { useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { Header } from "./components/Header";
 import { ClickButton } from "./components/ClickButton";
-import { Carousel, ScrollingCarousel } from "@trendyol-js/react-carousel";
+import { ScrollingCarousel } from "@trendyol-js/react-carousel";
+import RandomBoxAnimation from "./components/RandomBoxAnimation";
+import { Circle } from "@react-three/drei";
+import { MovingCircle } from "./components/MovingCircle";
+import { LineIntersection } from "./components/LineIntersection";
 
 function App() {
   const [projects, setProjects] = useLocalStorage<Project[]>(
@@ -31,6 +35,8 @@ function App() {
   const [deleted, setDeleted] = useState<boolean>(true);
 
   const [lightTheme, setLightTheme] = useState<boolean>(true);
+
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const projectsDeault = projects ?? initialProjects;
   const projectNameDefault = projectName ?? "";
@@ -224,13 +230,46 @@ function App() {
     }
   };
 
+  const handleMouseMove = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const { clientX, clientY } = event;
+    setMousePosition({ x: clientX, y: clientY });
+  };
+
   return (
     <>
+      {/* <div className="circle-container">
+        <MovingCircle
+          className="moving-circle-canvas"
+          width={window.innerWidth}
+          height={window.innerHeight}
+        />
+      </div> */}
+
+      <LineIntersection mousePosition={mousePosition} />
+
+      <div className="animation-container-top">
+        <RandomBoxAnimation
+          width={window.innerWidth}
+          height="7"
+          className="animation-canvas-top"
+        />
+      </div>
+
+      <div className="animation-container-bottom">
+        <RandomBoxAnimation
+          width={window.innerWidth}
+          height="7"
+          className="animation-canvas-bottom"
+        />
+      </div>
+
       <div className="left-section-container">
         <Header lightTheme={lightTheme} handleThemeChange={handleThemeChange} />
       </div>
 
-      <main className="right-section-container">
+      <main className="right-section-container" onMouseMove={handleMouseMove}>
         <section className="right-section-inner">
           <section className="new-entries-section-container">
             <Form
