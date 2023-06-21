@@ -5,14 +5,13 @@ import { Project } from "./data";
 import { PieChart } from "./components/PieChart";
 import { useLocalStorage } from "react-use";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { Header } from "./components/Header";
 import { ClickButton } from "./components/ClickButton";
 import { ScrollingCarousel } from "@trendyol-js/react-carousel";
 import RandomBoxAnimation from "./components/RandomBoxAnimation";
-import { Circle } from "@react-three/drei";
-import { MovingCircle } from "./components/MovingCircle";
+
 import { LineIntersection } from "./components/LineIntersection";
 
 function App() {
@@ -34,7 +33,7 @@ function App() {
   );
   const [deleted, setDeleted] = useState<boolean>(true);
 
-  const [lightTheme, setLightTheme] = useState<boolean>(true);
+  const [theme, setTheme] = useState<string>("light");
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -42,6 +41,14 @@ function App() {
   const projectNameDefault = projectName ?? "";
   const targetHoursDefault = targetHours ?? 0;
   const deletedProjectsDefault = deletedProjects ?? [];
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
 
   function calculateTotalHours(project: Project) {
     const time = project.time[0];
@@ -71,7 +78,7 @@ function App() {
       borderColor: ["rgba(0, 0, 0, 1)", "rgba(0, 0, 0, 1)"],
     };
 
-    const theme = lightTheme ? light : dark;
+    const selected = theme === "light" ? light : dark;
 
     const pieChartData = {
       labels: [],
@@ -82,8 +89,8 @@ function App() {
             calculateTotalHours(project),
             calculateRemainingHours(project),
           ],
-          backgroundColor: theme.backgroundColor,
-          borderColor: theme.borderColor,
+          backgroundColor: selected.backgroundColor,
+          borderColor: selected.borderColor,
           borderWidth: 1,
         },
       ],
@@ -223,10 +230,10 @@ function App() {
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const sliderValue = event.target.value;
-    if (sliderValue === "0") {
-      setLightTheme(true);
+    if (sliderValue === "1") {
+      setTheme("dark");
     } else {
-      setLightTheme(false);
+      setTheme("light");
     }
   };
 
@@ -239,180 +246,150 @@ function App() {
 
   return (
     <>
-      {/* <div className="circle-container">
-        <MovingCircle
-          className="moving-circle-canvas"
-          width={window.innerWidth}
-          height={window.innerHeight}
-        />
-      </div> */}
+      <LineIntersection mousePosition={mousePosition} theme={theme} />
 
-      <LineIntersection mousePosition={mousePosition} />
+      <section id="dot-animation">
+        <div className="fixed top-0 left-0 z-10">
+          <RandomBoxAnimation
+            width={window.innerWidth}
+            height="7"
+            className="fixed top-0 px-7"
+          />
+        </div>
 
-      <div className="animation-container-top">
-        <RandomBoxAnimation
-          width={window.innerWidth}
-          height="7"
-          className="animation-canvas-top"
-        />
-      </div>
+        <div className="fixed bottom-0 left-0 z-10 h-full min-w-20">
+          <RandomBoxAnimation
+            width={window.innerWidth}
+            height="7"
+            className="fixed bottom-0 px-8"
+          />
+        </div>
+      </section>
 
-      <div className="animation-container-bottom">
-        <RandomBoxAnimation
-          width={window.innerWidth}
-          height="7"
-          className="animation-canvas-bottom"
-        />
-      </div>
+      <section
+        id="header"
+        className="bg-green z-0 text-black dark:bg-black dark:text-green flex flex-col w-5% h-full py-5 justify-between items-center fixed"
+      >
+        <Header theme={theme} handleThemeChange={handleThemeChange} />
+      </section>
 
-      <div className="left-section-container">
-        <Header lightTheme={lightTheme} handleThemeChange={handleThemeChange} />
-      </div>
+      <main
+        onMouseMove={handleMouseMove}
+        className="bg-green z-0 text-black dark:bg-black dark:text-green flex flex-col justify-between fixed top-0 right-0 w-95% h-full py-5 pl-5 z-0"
+      >
+        <section
+          id="new-project-form"
+          className="w-full flex justify-between border-b border-l border-black dark:border-green z-0"
+        >
+          <Form
+            createNewProject={createNewProject}
+            handleNewProjectName={handleNewProjectName}
+            projectName={projectNameDefault}
+            handleNewTargetHours={handleNewTargetHours}
+            targetHours={targetHoursDefault}
+            theme={theme}
+          />
 
-      <main className="right-section-container" onMouseMove={handleMouseMove}>
-        <section className="right-section-inner">
-          <section className="new-entries-section-container">
-            <Form
-              createNewProject={createNewProject}
-              handleNewProjectName={handleNewProjectName}
-              projectName={projectNameDefault}
-              handleNewTargetHours={handleNewTargetHours}
-              targetHours={targetHoursDefault}
-              lightTheme={lightTheme}
-            />
+          <div
+            id="extra-buttons"
+            className="flex justify-center items-center mr-5"
+          >
+            <span>
+              {deleted && (
+                <div>
+                  <ClickButton
+                    text="UNDO LAST DELETE"
+                    title="undo last delete"
+                    type="button"
+                    viewBox="-5 -5 60 60"
+                    svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
+                    theme={theme}
+                    onClick={() => undoDeleteProject}
+                  />
+                </div>
+              )}
+            </span>
 
-            <div className="utility-buttons">
-              <span>
-                {deleted && (
-                  <div>
-                    <ClickButton
-                      text="UNDO LAST DELETE"
-                      title="undo last delete"
-                      type="button"
-                      viewBox="-5 -5 60 60"
-                      svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
-                      lightTheme={lightTheme}
-                      onClick={() => undoDeleteProject}
-                    />
-                  </div>
-                )}
-              </span>
-
-              <span>
-                <ClickButton
-                  text="CLEAR ALL"
-                  title="clear project hours"
-                  type="button"
-                  viewBox="-5 -5 60 60"
-                  svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
-                  lightTheme={lightTheme}
-                  onClick={() => clearAllHours}
-                />
-              </span>
-            </div>
-          </section>
-
-          <section className="section-pie-chart">
-            <div className="section-pie-chart-inner">
-              <div className="lined-gradient"></div>
-              <div className="pie-chart-container">
-                <ScrollingCarousel>
-                  {projectsDeault.map((project) => {
-                    const data = makePieChartData(project);
-                    return (
-                      <Tilt key={project.id}>
-                        <div
-                          className={
-                            lightTheme
-                              ? "pie-chart-tile-light"
-                              : "pie-chart-tile-dark"
-                          }
-                        >
-                          <div className="pie-chart-stats">
-                            <div
-                              className={
-                                lightTheme
-                                  ? "current-stat-light"
-                                  : "current-stat-dark"
-                              }
-                            >
-                              <p>Current - {calculateTotalHours(project)} </p>
-                            </div>
-                            <div
-                              className={
-                                lightTheme
-                                  ? "target-stat-light"
-                                  : "target-stat-dark"
-                              }
-                            >
-                              <p>Target - {project.targetHours}</p>
-                            </div>
-                          </div>
-                          <div className="pie-chart-with-number">
-                            <div className="pie-chart-remaining-hours">
-                              <h1>{calculateTotalHours(project)}</h1>
-                              <span>H</span>
-                            </div>
-                            <PieChart data={data} />
-
-                            <div
-                              className={
-                                lightTheme
-                                  ? "pie-chart-divider-left-light"
-                                  : "pie-chart-divider-left-dark"
-                              }
-                            ></div>
-
-                            <div
-                              className={
-                                lightTheme
-                                  ? "pie-chart-divider-right-light"
-                                  : "pie-chart-divider-right-dark"
-                              }
-                            ></div>
-
-                            <div
-                              className={
-                                lightTheme
-                                  ? "pie-chart-divider-bottom-light"
-                                  : "pie-chart-divider-bottom-dark"
-                              }
-                            ></div>
-                          </div>
-
-                          <div className="pie-chart-project-title">
-                            <h3>{project.title}</h3>
-                          </div>
-                        </div>
-                      </Tilt>
-                    );
-                  })}
-                </ScrollingCarousel>
-              </div>
-            </div>
-          </section>
-
-          <section className="section-table">
-            <div
-              className={
-                lightTheme ? "table-container-light" : "table-container-dark"
-              }
-            >
-              <Table
-                projects={projectsDeault}
-                updateProjectName={updateProjectName}
-                updateTargetHours={updateTargetHours}
-                handleHourInput={handleHourInput}
-                calculateTotalHours={calculateTotalHours}
-                calculateRemainingHours={calculateRemainingHours}
-                deleteProject={deleteProject}
-                clearProjectHours={clearProjectHours}
-                moveColumnToLeft={moveColumnToLeft}
-                moveColumnToRight={moveColumnToRight}
-                lightTheme={lightTheme}
+            <span>
+              <ClickButton
+                text="CLEAR ALL"
+                title="clear project hours"
+                type="button"
+                viewBox="-5 -5 60 60"
+                svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
+                theme={theme}
+                onClick={() => clearAllHours}
               />
-            </div>
-          </section>
+            </span>
+          </div>
+        </section>
+
+        <section id="pie-chart" className="flex w-full">
+          <ScrollingCarousel>
+            {projectsDeault.map((project) => {
+              const data = makePieChartData(project);
+              return (
+                <Tilt key={project.id}>
+                  <div
+                    id="project-tile"
+                    className="my-10 mr-10 border-l border-b border-black dark:border-green "
+                  >
+                    <div id="stats-container" className="flex justify-end">
+                      <div
+                        id="tile-current"
+                        className="mr-2 bg-black text-green dark:bg-green dark:text-black"
+                      >
+                        <p className="p-1">
+                          Current - {calculateTotalHours(project)}{" "}
+                        </p>
+                      </div>
+                      <div
+                        id="tile-target"
+                        className="border-black border dark:border-green"
+                      >
+                        <p className="p-1">Target - {project.targetHours}</p>
+                      </div>
+                    </div>
+
+                    <div
+                      id="donut-container"
+                      className="flex relative justify-center items-center p-5 mx-5"
+                    >
+                      <div id="total-hours" className="flex absolute ">
+                        <h1>{calculateTotalHours(project)}</h1>
+                        <span>H</span>
+                      </div>
+
+                      <PieChart data={data} theme={theme} />
+                    </div>
+
+                    <div id="project-title-container" className="pl-2 pb-1">
+                      <h3>{project.title}</h3>
+                    </div>
+                  </div>
+                </Tilt>
+              );
+            })}
+          </ScrollingCarousel>
+        </section>
+
+        <section
+          id="table-container"
+          className="w-full border-l border-b border-black dark:border-green px-2 "
+        >
+          <Table
+            projects={projectsDeault}
+            updateProjectName={updateProjectName}
+            updateTargetHours={updateTargetHours}
+            handleHourInput={handleHourInput}
+            calculateTotalHours={calculateTotalHours}
+            calculateRemainingHours={calculateRemainingHours}
+            deleteProject={deleteProject}
+            clearProjectHours={clearProjectHours}
+            moveColumnToLeft={moveColumnToLeft}
+            moveColumnToRight={moveColumnToRight}
+            theme={theme}
+          />
         </section>
       </main>
     </>

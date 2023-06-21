@@ -1,9 +1,12 @@
 interface Props {
   mousePosition: { x: number; y: number };
+  theme: string;
 }
 
 export const LineIntersection = (props: Props) => {
-  const { mousePosition } = props;
+  const { theme, mousePosition } = props;
+
+  const backgroundColor = theme === "light" ? "black" : "rgb(0,255,0)";
 
   const emptySpace = 120;
 
@@ -25,9 +28,9 @@ export const LineIntersection = (props: Props) => {
             window.innerHeight -
             emptyCoordinates(mousePosition, emptySpace).verticalTop,
           width: "0.5px",
-          backgroundColor: "black",
+          backgroundColor: backgroundColor,
           pointerEvents: "none",
-          zIndex: 2000,
+          zIndex: 1000,
         }}
       />
 
@@ -38,9 +41,9 @@ export const LineIntersection = (props: Props) => {
           bottom: 0,
           left: mousePosition.x,
           width: "0.5px",
-          backgroundColor: "black",
+          backgroundColor: backgroundColor,
           pointerEvents: "none",
-          zIndex: 2000,
+          zIndex: 1000,
         }}
       />
 
@@ -51,7 +54,7 @@ export const LineIntersection = (props: Props) => {
           left: emptyCoordinates(mousePosition, emptySpace).horizontalRight,
           right: 0,
           height: "0.5px",
-          backgroundColor: "black",
+          backgroundColor: backgroundColor,
           pointerEvents: "none",
           zIndex: 2000,
         }}
@@ -66,7 +69,7 @@ export const LineIntersection = (props: Props) => {
             emptyCoordinates(mousePosition, emptySpace).horizontalLeft,
           left: 0,
           height: "0.5px",
-          backgroundColor: "black",
+          backgroundColor: backgroundColor,
           pointerEvents: "none",
           zIndex: 2000,
         }}

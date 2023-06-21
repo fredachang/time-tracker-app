@@ -14,8 +14,14 @@ interface Props {
   clearProjectHours: (id: string) => void;
   moveColumnToLeft: (project: Project[], id: string) => void;
   moveColumnToRight: (project: Project[], id: string) => void;
-  lightTheme: boolean;
+  theme: string;
 }
+
+const indexButtonStyle =
+  "flex justify-center items-center w-5 h-5 bg-transparent border-0 outline-0 text-base";
+
+const tableRowDividerStyle = "bg-black dark:bg-green w-full flex absolute h-px";
+
 export function Table(props: Props) {
   const {
     projects,
@@ -28,7 +34,7 @@ export function Table(props: Props) {
     clearProjectHours,
     moveColumnToLeft,
     moveColumnToRight,
-    lightTheme,
+    theme,
   } = props;
 
   const renderDividers = (hours: number) => {
@@ -37,7 +43,7 @@ export function Table(props: Props) {
 
     for (let i = 0; i < numDividers; i++) {
       dividers.push(
-        <div className="time-marks" key={i}>
+        <div className="text-base" key={i}>
           |
         </div>
       );
@@ -48,16 +54,16 @@ export function Table(props: Props) {
 
   return (
     <>
-      <table>
+      <table className="w-full">
         <thead>
           <tr>
-            <th className="column-1">Day</th>
+            <th className="text-left">Day</th>
             {projects.map((project, index) => (
               <th key={project.id}>
-                <div className="project-title-field-container">
+                <div className="flex justify-center items-center">
                   {index > 0 ? (
                     <button
-                      className="index-button"
+                      className={indexButtonStyle}
                       onClick={() => moveColumnToLeft(projects, project.id)}
                     >
                       &#8592;
@@ -67,7 +73,6 @@ export function Table(props: Props) {
                   )}
 
                   <input
-                    className="project-title"
                     type="text"
                     value={project.title}
                     onChange={(e) => {
@@ -77,7 +82,7 @@ export function Table(props: Props) {
 
                   {index < projects.length - 1 ? (
                     <button
-                      className="index-button"
+                      className={indexButtonStyle}
                       onClick={() => moveColumnToRight(projects, project.id)}
                     >
                       &#8594;
@@ -91,21 +96,17 @@ export function Table(props: Props) {
           </tr>
         </thead>
 
-        <div
-          className={
-            lightTheme ? "table-row-divider-light" : "table-row-divider-dark"
-          }
-        ></div>
+        <div className={tableRowDividerStyle}></div>
 
         <tbody>
           <tr>
-            <td className="column-1">TARGET HOURS</td>
+            <td className="text-left">TARGET HOURS</td>
             {projects.map((project) => (
               <td key={project.id}>
-                <div className="td-container">
-                  <div className="target-hour-input-field">
+                <div className="flex justify-center">
+                  <div className="flex justify-between w-1/2">
                     <button
-                      className="index-button"
+                      className={indexButtonStyle}
                       onClick={() => {
                         updateTargetHours(
                           project.id,
@@ -129,7 +130,7 @@ export function Table(props: Props) {
                     }}
                   /> */}
                     <button
-                      className="index-button"
+                      className={indexButtonStyle}
                       onClick={() => {
                         updateTargetHours(
                           project.id,
@@ -145,14 +146,10 @@ export function Table(props: Props) {
             ))}
           </tr>
 
-          <div
-            className={
-              lightTheme ? "table-row-divider-light" : "table-row-divider-dark"
-            }
-          ></div>
+          <div className={tableRowDividerStyle}></div>
 
           <tr>
-            <td className="column-1">MON</td>
+            <td className="text-left">MON</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -166,7 +163,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">TUE</td>
+            <td className="text-left">TUE</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -180,7 +177,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">WED</td>
+            <td className="text-left">WED</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -194,7 +191,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">THU</td>
+            <td className="text-left">THU</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -208,7 +205,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">FRI</td>
+            <td className="text-left">FRI</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -222,7 +219,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">SAT</td>
+            <td className="text-left">SAT</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -236,7 +233,7 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1">SUN</td>
+            <td className="text-left">SUN</td>
             {projects.map((project) => (
               <HourInput
                 key={project.id}
@@ -250,29 +247,25 @@ export function Table(props: Props) {
           </tr>
         </tbody>
 
-        <div
-          className={
-            lightTheme ? "table-row-divider-light" : "table-row-divider-dark"
-          }
-        ></div>
+        <div className={tableRowDividerStyle}></div>
 
         <tfoot>
           <tr>
-            <td className="column-1">TARGET HOURS</td>
+            <td className="text-left">TARGET HOURS</td>
             {projects.map((project) => (
               <td key={project.id}>{project.targetHours}</td>
             ))}
           </tr>
 
           <tr>
-            <td className="column-1">TOTAL HOURS</td>
+            <td className="text-left">TOTAL HOURS</td>
             {projects.map((project) => (
               <td key={project.id}>{calculateTotalHours(project)}</td>
             ))}
           </tr>
 
           <tr>
-            <td className="column-1">REMAINING HOURS</td>
+            <td className="text-left">REMAINING HOURS</td>
             {projects.map((project) => (
               <td key={project.id}>
                 {Math.max(calculateRemainingHours(project), 0) || "All Done!"}
@@ -281,17 +274,17 @@ export function Table(props: Props) {
           </tr>
 
           <tr>
-            <td className="column-1"></td>
+            <td className="text-left"></td>
             {projects.map((project) => (
               <td key={project.id}>
-                <div className="actions-button-container">
+                <div className="flex justify-center flex-wrap ">
                   <ClickButton
                     text="DELETE"
                     title="delete project"
                     type="button"
                     viewBox="-5 -5 60 60"
                     svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5ZM8.05,8.05l33.9,33.9m0-33.9L8.05,41.95"
-                    lightTheme={lightTheme}
+                    theme={theme}
                     onClick={() => deleteProject(project.id)}
                   />
                   <ClickButton
@@ -300,7 +293,7 @@ export function Table(props: Props) {
                     type="button"
                     viewBox="-5 -5 60 60"
                     svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
-                    lightTheme={lightTheme}
+                    theme={theme}
                     onClick={() => clearProjectHours(project.id)}
                   />
                 </div>
