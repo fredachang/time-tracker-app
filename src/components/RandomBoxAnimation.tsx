@@ -3,9 +3,13 @@ import React, { useEffect, useRef } from "react";
 type CanvasProps = React.DetailedHTMLProps<
   React.CanvasHTMLAttributes<HTMLCanvasElement>,
   HTMLCanvasElement
-> & { className: string };
+> & { className: string } & { theme: string };
 
-const RandomBoxAnimation: React.FC<CanvasProps> = ({ className, ...props }) => {
+const RandomBoxAnimation: React.FC<CanvasProps> = ({
+  theme,
+  className,
+  ...props
+}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -58,7 +62,8 @@ const RandomBoxAnimation: React.FC<CanvasProps> = ({ className, ...props }) => {
           ctx.fillStyle = "#000"; // Black fill
           ctx.fillRect(box.x, box.y, boxWidth, boxHeight);
         } else {
-          ctx.clearRect(box.x, box.y, boxWidth, boxHeight); // Clear the box
+          ctx.fillStyle = "rgb(0,255,0)"; // Black fill
+          ctx.fillRect(box.x, box.y, boxWidth, boxHeight);
         }
       });
 

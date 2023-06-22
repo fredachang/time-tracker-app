@@ -24,15 +24,15 @@ export function PieChart(props: Props) {
       <Doughnut data={data} />
       <div
         id="left-line"
-        className="bg-black w-14 h-px flex absolute top-52%"
+        className="bg-black dark:bg-green w-14 h-px flex absolute top-52% left-55px"
       ></div>
       <div
         id="right-line"
-        className="bg-black w-14 h-px flex absolute top-52% right-17px"
+        className="bg-black dark:bg-green w-14 h-px flex absolute top-52% right-55px"
       ></div>
       <div
         id="bottom-line"
-        className="bg-black w-px h-14 flex absolute left-1/2 bottom-17px"
+        className="bg-black dark:bg-green w-px h-14 flex absolute left-1/2 bottom-12px"
       ></div>
     </div>
   );

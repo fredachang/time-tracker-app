@@ -22,6 +22,11 @@ const indexButtonStyle =
 
 const tableRowDividerStyle = "bg-black dark:bg-green w-full flex absolute h-px";
 
+const inputStyleLight =
+  "bg-green rounded w-2/5 hover:bg-greenLight focus:bg-greenLight";
+const inputStyleDark =
+  "bg-black rounded w-2/5 hover:bg-zinc-900 focus:bg-zinc-900";
+
 export function Table(props: Props) {
   const {
     projects,
@@ -57,7 +62,7 @@ export function Table(props: Props) {
       <table className="w-full">
         <thead>
           <tr>
-            <th className="text-left">Day</th>
+            <th className="text-left">Projects</th>
             {projects.map((project, index) => (
               <th key={project.id}>
                 <div className="flex justify-center items-center">
@@ -75,6 +80,9 @@ export function Table(props: Props) {
                   <input
                     type="text"
                     value={project.title}
+                    className={
+                      theme === "light" ? inputStyleLight : inputStyleDark
+                    }
                     onChange={(e) => {
                       updateProjectName(project.id, e.target.value);
                     }}

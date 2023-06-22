@@ -9,6 +9,12 @@ interface Props {
   theme: string;
 }
 
+const inputStyleLight =
+  "bg-green rounded w-full block mr-5 hover:bg-greenLight focus:bg-greenLight";
+
+const inputStyleDark =
+  "bg-black rounded w-full block mr-5 hover:bg-zinc-900 hover:rounded focus:bg-zinc-900";
+
 export function Form(props: Props) {
   const {
     createNewProject,
@@ -21,11 +27,11 @@ export function Form(props: Props) {
   return (
     <>
       <form onSubmit={(e) => createNewProject(e)} className="w-full">
-        <div className="flex w-4/5 justify-between items-center m-0">
-          <div className="pl-2 w-1/2 text-base">
+        <div className="flex w-3/5 justify-between items-center m-0">
+          <div className="pl-2 w-3/5 text-base">
             <label htmlFor="new-project-name-input">PROJECT NAME:</label>
             <input
-              className="w-full mr-5 block"
+              className={theme === "light" ? inputStyleLight : inputStyleDark}
               id="new-project-name-input"
               placeholder="enter project name"
               type="text"
@@ -34,10 +40,10 @@ export function Form(props: Props) {
             ></input>
           </div>
 
-          <div className="pl-2 w-1/2 text-base border-l border-black">
+          <div className="pl-2 w-2/5 text-base border-l border-black dark:border-l dark:border-green">
             <label htmlFor="new-target-hour-input">TARGET HOURS:</label>
             <input
-              className="w-full mr-5 block"
+              className={theme === "light" ? inputStyleLight : inputStyleDark}
               id="new-target-hour-input"
               placeholder="enter target hours"
               onChange={handleNewTargetHours}

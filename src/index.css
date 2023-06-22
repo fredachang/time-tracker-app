@@ -71,12 +71,6 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
 
-table input {
-  width: 39%;
-  height: 2rem;
-  text-align: center;
-}
-
 .empty-button {
   margin: 8px;
   display: flex;
@@ -95,93 +89,20 @@ td {
   text-align: center;
 }
 
-.table-row-divider-dark {
-  display: flex;
-  position: absolute;
-  left: 20px;
-  width: 100vw;
-  height: 1px;
-  background-color: rgba(0, 255, 0, 1);
-}
-
-.table-row-divider-light {
-  display: flex;
-  position: absolute;
-  left: 20px;
-  width: 100vw;
-  height: 1px;
-  background-color: black;
-}
-
 .slider[type="range"] {
-  writing-mode: bt-lr;
   -webkit-appearance: slider-vertical;
   width: 10px;
   height: 40px;
   padding: 0 5px;
 }
 
-.slider[type="range"] {
-  width: 10px;
-  height: 40px;
-  padding: 0 5px;
-}
-
-.slider[type="range"]::-webkit-slider-thumb {
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background-color: transparent;
-  border: none;
-  box-shadow: 0 0 0 2px black;
-  border-radius: 50%;
-  cursor: pointer;
-  transform: rotate(-90deg);
-  transform-origin: center;
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
 }
 
 .slider[type="range"]::-webkit-slider-runnable-track {
-  background-color: black;
+  background-color: rgb(0, 255, 0);
+  border: 1px solid black;
   height: 100%;
-  width: 5px;
-}
-
-.animation-container-top {
-  z-index: 1000;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
-.animation-container-bottom {
-  background-color: purple;
-  position: fixed;
-  z-index: 1000;
-  bottom: 0;
-  left: 0;
-}
-
-.animation-canvas-top {
-  padding: 0 7px;
-  position: fixed;
-  top: 0;
-}
-
-.animation-canvas-bottom {
-  padding: 0 7px;
-  position: fixed;
-  bottom: 0;
-}
-
-.circle-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 1000;
-}
-
-.moving-circle-canvas {
-  background-color: transparent;
+  width: 8px;
 }

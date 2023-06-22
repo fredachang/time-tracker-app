@@ -2,17 +2,17 @@ import { Table } from "./components/Table";
 import { Form } from "./components/Form";
 import { DayKey, initialProjects, weekDefault } from "./data";
 import { Project } from "./data";
-import { PieChart } from "./components/PieChart";
 import { useLocalStorage } from "react-use";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
-import Tilt from "react-parallax-tilt";
 import { Header } from "./components/Header";
 import { ClickButton } from "./components/ClickButton";
 import { ScrollingCarousel } from "@trendyol-js/react-carousel";
 import RandomBoxAnimation from "./components/RandomBoxAnimation";
 
 import { LineIntersection } from "./components/LineIntersection";
+import { ProjectTile } from "./components/ProjectTile";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const [projects, setProjects] = useLocalStorage<Project[]>(
@@ -36,6 +36,7 @@ function App() {
   const [theme, setTheme] = useState<string>("light");
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(true);
 
   const projectsDeault = projects ?? initialProjects;
   const projectNameDefault = projectName ?? "";
@@ -114,8 +115,8 @@ function App() {
 
     const newProject: Project = {
       id: uuidv4(),
-      title: projectNameDefault,
-      targetHours: targetHoursDefault,
+      title: projectNameDefault || "New Project",
+      targetHours: targetHoursDefault || 10,
       time: [weekDefault],
     };
     const updatedProjects = [...projectsDeault, newProject];
@@ -254,6 +255,7 @@ function App() {
             width={window.innerWidth}
             height="7"
             className="fixed top-0 px-7"
+            theme={theme}
           />
         </div>
 
@@ -262,6 +264,7 @@ function App() {
             width={window.innerWidth}
             height="7"
             className="fixed bottom-0 px-8"
+            theme={theme}
           />
         </div>
       </section>
@@ -292,7 +295,7 @@ function App() {
 
           <div
             id="extra-buttons"
-            className="flex justify-center items-center mr-5"
+            className="flex w-1/5 border-l border-black justify-end items-center mr-5"
           >
             <span>
               {deleted && (
@@ -327,47 +330,19 @@ function App() {
         <section id="pie-chart" className="flex w-full">
           <ScrollingCarousel>
             {projectsDeault.map((project) => {
-              const data = makePieChartData(project);
+              const pieChartData = makePieChartData(project);
               return (
-                <Tilt key={project.id}>
-                  <div
-                    id="project-tile"
-                    className="my-10 mr-10 border-l border-b border-black dark:border-green "
-                  >
-                    <div id="stats-container" className="flex justify-end">
-                      <div
-                        id="tile-current"
-                        className="mr-2 bg-black text-green dark:bg-green dark:text-black"
-                      >
-                        <p className="p-1">
-                          Current - {calculateTotalHours(project)}{" "}
-                        </p>
-                      </div>
-                      <div
-                        id="tile-target"
-                        className="border-black border dark:border-green"
-                      >
-                        <p className="p-1">Target - {project.targetHours}</p>
-                      </div>
-                    </div>
-
-                    <div
-                      id="donut-container"
-                      className="flex relative justify-center items-center p-5 mx-5"
-                    >
-                      <div id="total-hours" className="flex absolute ">
-                        <h1>{calculateTotalHours(project)}</h1>
-                        <span>H</span>
-                      </div>
-
-                      <PieChart data={data} theme={theme} />
-                    </div>
-
-                    <div id="project-title-container" className="pl-2 pb-1">
-                      <h3>{project.title}</h3>
-                    </div>
-                  </div>
-                </Tilt>
+                <ProjectTile
+                  key={project.id}
+                  project={project}
+                  calculateTotalHours={calculateTotalHours}
+                  pieChartData={pieChartData}
+                  theme={theme}
+                  updateProjectName={updateProjectName}
+                  deleteProject={deleteProject}
+                  clearProjectHours={clearProjectHours}
+                  isVisible={isVisible}
+                />
               );
             })}
           </ScrollingCarousel>
