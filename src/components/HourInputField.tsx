@@ -31,7 +31,7 @@ export const HourInput = (props: Props) => {
     for (let i = 0; i < numDividers; i++) {
       const divider = i % 2 === 0 ? "|" : ":"; // Alternate between "|" and ":"
       dividers.push(
-        <div className="text-base" key={i}>
+        <div key={i} className="time-marks">
           {divider}
         </div>
       );
@@ -56,7 +56,11 @@ export const HourInput = (props: Props) => {
           >
             -
           </button>
-          {renderDividers(project.time[0][dayKey])}
+
+          <div className="w-full flex justify-start">
+            {renderDividers(project.time[0][dayKey])}
+          </div>
+
           <button
             className="flex justify-center items-center w-5 h-5 bg-transparent border-0 outline-0 text-base"
             onClick={() => {

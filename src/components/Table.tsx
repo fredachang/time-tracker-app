@@ -47,9 +47,10 @@ export function Table(props: Props) {
     const dividers = [];
 
     for (let i = 0; i < numDividers; i++) {
+      const divider = i % 2 === 0 ? "|" : ":"; // Alternate between "|" and ":"
       dividers.push(
-        <div className="text-base" key={i}>
-          |
+        <div key={i} className="time-marks">
+          {divider}
         </div>
       );
     }
@@ -125,18 +126,10 @@ export function Table(props: Props) {
                       -
                     </button>
 
-                    {renderDividers(project.targetHours)}
+                    <div className="w-full flex justify-start">
+                      {renderDividers(project.targetHours)}
+                    </div>
 
-                    {/* <input
-                    type="number"
-                    value={project.targetHours}
-                    onChange={(e) => {
-                      updateTargetHours(
-                        project.id,
-                        parseInt(e.target.value, 10)
-                      );
-                    }}
-                  /> */}
                     <button
                       className={indexButtonStyle}
                       onClick={() => {
