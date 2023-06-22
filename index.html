@@ -5,8 +5,40 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weekly Time App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              green: "rgb(0,255,0)",
+              greenLight: "rgb(0,245,0)",
+            },
+            width: {
+              "5%": "5%",
+              "95%": "95%",
+            },
+            inset: {
+              "52%": "52%",
+              "55px": "55px",
+              "12px": "12px",
+            },
+            fontSize: {
+              sm: "0.5rem",
+              base: "0.8rem",
+              xl: "1.25rem",
+              "2xl": "1.563rem",
+              "3xl": "1.953rem",
+              "4xl": "2.441rem",
+              "5xl": "3.052rem",
+            },
+          },
+        },
+      };
+    </script>
   </head>
-  <body>
+  <body className="dark">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

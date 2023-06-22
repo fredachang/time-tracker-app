@@ -2,12 +2,17 @@ import { Table } from "./components/Table";
 import { Form } from "./components/Form";
 import { DayKey, initialProjects, weekDefault } from "./data";
 import { Project } from "./data";
-import { PieChart } from "./components/PieChart";
 import { useLocalStorage } from "react-use";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
-import { Backdrop } from "./components/Backdrop";
-import Tilt from "react-parallax-tilt";
+import { useEffect, useState } from "react";
+import { Header } from "./components/Header";
+import { ClickButton } from "./components/ClickButton";
+import { ScrollingCarousel } from "@trendyol-js/react-carousel";
+import RandomBoxAnimation from "./components/RandomBoxAnimation";
+
+import { LineIntersection } from "./components/LineIntersection";
+import { ProjectTile } from "./components/ProjectTile";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const [projects, setProjects] = useLocalStorage<Project[]>(
@@ -26,12 +31,25 @@ function App() {
     "deletedProjects",
     []
   );
-  const [deleted, setDeleted] = useState<boolean>(false);
+  const [deleted, setDeleted] = useState<boolean>(true);
+
+  const [theme, setTheme] = useState<string>("light");
+
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(true);
 
   const projectsDeault = projects ?? initialProjects;
   const projectNameDefault = projectName ?? "";
   const targetHoursDefault = targetHours ?? 0;
   const deletedProjectsDefault = deletedProjects ?? [];
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
 
   function calculateTotalHours(project: Project) {
     const time = project.time[0];
@@ -51,6 +69,18 @@ function App() {
   }
 
   const makePieChartData = (project: Project) => {
+    const dark = {
+      backgroundColor: ["rgba(0, 255, 0, 1)", "rgba(0, 0, 0, 1)"],
+      borderColor: ["rgba(0, 255, 0, 1)", "rgba(0, 255, 0, 1)"],
+    };
+
+    const light = {
+      backgroundColor: ["rgba(0, 0, 0, 1)", "rgba(0, 255, 0, 1)"],
+      borderColor: ["rgba(0, 0, 0, 1)", "rgba(0, 0, 0, 1)"],
+    };
+
+    const selected = theme === "light" ? light : dark;
+
     const pieChartData = {
       labels: [],
       datasets: [
@@ -60,12 +90,13 @@ function App() {
             calculateTotalHours(project),
             calculateRemainingHours(project),
           ],
-          backgroundColor: ["black", "white"],
-          borderColor: ["black", "black"],
-          borderWidth: 0.5,
+          backgroundColor: selected.backgroundColor,
+          borderColor: selected.borderColor,
+          borderWidth: 1,
         },
       ],
     };
+
     return pieChartData;
   };
 
@@ -84,8 +115,8 @@ function App() {
 
     const newProject: Project = {
       id: uuidv4(),
-      title: projectNameDefault,
-      targetHours: targetHoursDefault,
+      title: projectNameDefault || "New Project",
+      targetHours: targetHoursDefault || 10,
       time: [weekDefault],
     };
     const updatedProjects = [...projectsDeault, newProject];
@@ -121,11 +152,7 @@ function App() {
   };
 
   const handleHourInput = (id: string, newHours: number, dayKey: DayKey) => {
-    if (isNaN(newHours)) {
-      newHours = 0;
-    } else {
-      newHours = Math.round(newHours * 2) / 2; // Round to the nearest 0.5
-    }
+    const hours = newHours === 0 ? 0 : Math.round(newHours * 2) / 2;
 
     const updatedProjects = projectsDeault.map((project) => {
       if (project.id === id) {
@@ -134,7 +161,7 @@ function App() {
           time: [
             {
               ...project.time[0],
-              [dayKey]: newHours,
+              [dayKey]: hours,
             },
           ],
         };
@@ -144,27 +171,6 @@ function App() {
 
     setProjects(updatedProjects);
   };
-
-  // const handleHourInput = (id: string, newHours: number, dayKey: DayKey) => {
-  //   if (isNaN(newHours)) {
-  //     newHours = 0;
-  //   }
-  //   const updatedProjects = projectsDeault.map((project) => {
-  //     if (project.id === id) {
-  //       return {
-  //         ...project,
-  //         time: [
-  //           {
-  //             ...project.time[0],
-  //             [dayKey]: newHours,
-  //           },
-  //         ],
-  //       };
-  //     }
-  //     return project;
-  //   });
-  //   setProjects(updatedProjects);
-  // };
 
   const deleteProject = (id: string) => {
     const projectToDelete = projectsDeault.find((project) => project.id === id);
@@ -223,56 +229,129 @@ function App() {
     setProjects(projects);
   };
 
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const sliderValue = event.target.value;
+    if (sliderValue === "1") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
+
+  const handleMouseMove = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const { clientX, clientY } = event;
+    setMousePosition({ x: clientX, y: clientY });
+  };
+
   return (
     <>
-      <div className="canvas">
-        <Backdrop />
-      </div>
+      <LineIntersection mousePosition={mousePosition} theme={theme} />
 
-      <section className="body">
-        <section className="section-pie-chart">
-          <h2>Dashboard</h2>
-          <div className="pie-chart-container">
-            {projectsDeault.map((project) => {
-              const data = makePieChartData(project);
-              return (
-                <Tilt key={project.id}>
-                  <div className="pie-chart-tile">
-                    <h3>{project.title}</h3>
-                    <p>
-                      {calculateRemainingHours(project)} hours to go this week
-                    </p>
-                    <PieChart data={data} />
-                  </div>
-                </Tilt>
-              );
-            })}
+      <section id="dot-animation">
+        <div className="fixed top-0 left-0 z-10">
+          <RandomBoxAnimation
+            width={window.innerWidth}
+            height="7"
+            className="fixed top-0 px-7"
+            theme={theme}
+          />
+        </div>
+
+        <div className="fixed bottom-0 left-0 z-10 h-full min-w-20">
+          <RandomBoxAnimation
+            width={window.innerWidth}
+            height="7"
+            className="fixed bottom-0 px-8"
+            theme={theme}
+          />
+        </div>
+      </section>
+
+      <section
+        id="header"
+        className="bg-green z-0 text-black dark:bg-black dark:text-green flex flex-col w-5% h-full py-5 justify-between items-center fixed"
+      >
+        <Header theme={theme} handleThemeChange={handleThemeChange} />
+      </section>
+
+      <main
+        onMouseMove={handleMouseMove}
+        className="bg-green z-0 text-black dark:bg-black dark:text-green flex flex-col justify-between fixed top-0 right-0 w-95% h-full py-5 pl-5 z-0"
+      >
+        <section
+          id="new-project-form"
+          className="w-full flex justify-between border-b border-l border-black dark:border-green z-0"
+        >
+          <Form
+            createNewProject={createNewProject}
+            handleNewProjectName={handleNewProjectName}
+            projectName={projectNameDefault}
+            handleNewTargetHours={handleNewTargetHours}
+            targetHours={targetHoursDefault}
+            theme={theme}
+          />
+
+          <div
+            id="extra-buttons"
+            className="flex w-1/5 border-l border-black justify-end items-center mr-5"
+          >
+            <span>
+              {deleted && (
+                <div>
+                  <ClickButton
+                    text="UNDO LAST DELETE"
+                    title="undo last delete"
+                    type="button"
+                    viewBox="-5 -5 60 60"
+                    svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
+                    theme={theme}
+                    onClick={() => undoDeleteProject}
+                  />
+                </div>
+              )}
+            </span>
+
+            <span>
+              <ClickButton
+                text="CLEAR ALL"
+                title="clear project hours"
+                type="button"
+                viewBox="-5 -5 60 60"
+                svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
+                theme={theme}
+                onClick={() => clearAllHours}
+              />
+            </span>
           </div>
         </section>
 
-        <section className="section-new-entries">
-          <h2>Entries</h2>
-          <div className="new-entries-form">
-            <Form
-              createNewProject={createNewProject}
-              handleNewProjectName={handleNewProjectName}
-              projectName={projectNameDefault}
-              handleNewTargetHours={handleNewTargetHours}
-              targetHours={targetHoursDefault}
-            />
-            <div>
-              <span>
-                {deleted && (
-                  <button onClick={undoDeleteProject}>Undo Last Delete</button>
-                )}
-              </span>
+        <section id="pie-chart" className="flex w-full">
+          <ScrollingCarousel>
+            {projectsDeault.map((project) => {
+              const pieChartData = makePieChartData(project);
+              return (
+                <ProjectTile
+                  key={project.id}
+                  project={project}
+                  calculateTotalHours={calculateTotalHours}
+                  pieChartData={pieChartData}
+                  theme={theme}
+                  updateProjectName={updateProjectName}
+                  deleteProject={deleteProject}
+                  clearProjectHours={clearProjectHours}
+                  isVisible={isVisible}
+                />
+              );
+            })}
+          </ScrollingCarousel>
+        </section>
 
-              <span>
-                <button onClick={clearAllHours}>Clear All Hours</button>
-              </span>
-            </div>
-          </div>
-
+        <section
+          id="table-container"
+          className="w-full border-l border-b border-black dark:border-green px-2 "
+        >
           <Table
             projects={projectsDeault}
             updateProjectName={updateProjectName}
@@ -284,9 +363,10 @@ function App() {
             clearProjectHours={clearProjectHours}
             moveColumnToLeft={moveColumnToLeft}
             moveColumnToRight={moveColumnToRight}
+            theme={theme}
           />
         </section>
-      </section>
+      </main>
     </>
   );
 }

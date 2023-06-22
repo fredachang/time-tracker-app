@@ -1,71 +1,53 @@
 @font-face {
-  font-family: "Fragment-Sans-Light";
-  src: local("Fragment"),
-    url("./fonts/PPFragment-SansLight.otf") format("truetype");
+  font-family: "Dazzed-Light";
+  src: local("Dzzed"),
+    url("/public/Fonts/DazzedTRIAL-Light.woff2") format("truetype");
 }
 
 @font-face {
-  font-family: "Fragment-Sans-Regular";
-  src: local("Fragment"),
-    url("./fonts/PPFragment-SansRegular.otf") format("truetype");
+  font-family: "Dazzed-Regular";
+  src: local("Dzzed"),
+    url("/public/Fonts/DazzedTRIAL-Regular.woff2") format("truetype");
 }
 
 @font-face {
-  font-family: "Fragment-Sans-Bold";
-  src: local("Fragment"),
-    url("./fonts/PPFragment-SansExtraBold.otf") format("truetype");
+  font-family: "Dazzed-Bold";
+  src: local("Dzzed"),
+    url("/public/Fonts/DazzedTRIAL-Bold.woff2") format("truetype");
 }
 
 @font-face {
-  font-family: "Fragment-Serif-Regular";
-  src: local("Fragment"),
-    url("./fonts/PPFragment-SerifRegular.otf") format("truetype");
+  font-family: "Documen-Light";
+  src: local("Documen"),
+    url("/public/Fonts-2/DocumanTRIAL-Light.woff2") format("truetype");
 }
 
-@font-face {
-  font-family: "Fragment-Serif-Light";
-  src: local("Fragment"),
-    url("./fonts/PPFragment-SerifLight.otf") format("truetype");
-}
-
-@font-face {
-  font-family: "Fragment-Serif-Bold";
-  src: local("Fragment"),
-    url("./fonts/PPFragment-SerifExtraBold.otf") format("truetype");
-}
-
-body {
-  background-color: rgb(250, 250, 250);
-  margin: 0;
+.logo-text {
+  font-family: "Dazzed-Regular";
+  writing-mode: vertical-rl;
 }
 
 h1 {
+  font-family: "Documen-Light";
   font-size: 2rem;
   margin: 0;
   padding: 0;
-  color: white;
-  background-color: black;
-}
-
-.body {
-  width: 90%;
-  position: absolute;
-  right: 10px;
-  margin: 10px;
 }
 
 h2 {
-  font-family: "Fragment-Sans-Regular";
+  font-family: "Documen-Light";
   font-size: 1.2rem;
+  margin: 0 0 0.5rem 0;
 }
 
 h3 {
-  font-family: "Fragment-Sans-Regular";
+  font-family: "Documen-Light";
   font-size: 1rem;
 }
 
 p {
-  font-family: "Fragment-Sans-Light";
+  font-family: "Documen-Light";
+  font-size: 0.7rem;
 }
 
 .canvas {
@@ -74,120 +56,19 @@ p {
   position: fixed;
 }
 
-.section-pie-chart {
-  margin: 20px 0;
-}
-
-.pie-chart-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.pie-chart-tile {
-  padding: 5px;
-  margin-left: 0;
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border: 0.5px solid black;
-  border-radius: 0.7rem;
-  background-color: rgba(1, 134, 4, 20%);
-}
-
-.pie-chart {
-  margin: 20px;
-  width: 30%;
-}
-
 .donut {
-  width: 250px;
-  height: 250px;
+  width: 160px;
+  height: 160px;
   margin: 0 auto;
 }
 
-.section-new-entries {
-  margin: 20px 0;
-}
-
-.new-entries-form {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0;
-}
-
-form {
-  width: 60%;
-}
-
-.new-project-name-input {
-  margin-right: 5px;
-  width: 45%;
-  border: 0.5px black solid;
-}
-
-.new-target-hour-input {
-  width: 25%;
-  border: 0.5px black solid;
-}
-
 input {
-  font-family: "Fragment-Sans-Light";
-  font-size: 0.7rem;
-  border: none;
-  background-color: white;
-  width: 35%;
-  height: 2rem;
-  border-radius: 0.6rem;
-  text-align: center;
-  transition: box-shadow 0.1s;
+  all: unset;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
-}
-
-input:focus {
-  outline: none;
-  box-shadow: 0 0 0.5rem rgb(220, 220, 220);
-}
-
-table input {
-  background-color: white;
-  width: 60%;
-  height: 2rem;
-  border-radius: 0.6rem;
-  text-align: center;
-}
-
-button {
-  font-family: "Fragment-Sans-Light";
-  font-size: 0.7rem;
-  background-color: rgb(250, 250, 250);
-  border: none;
-}
-
-button:hover {
-  border-bottom: 0.5px black solid;
-}
-
-.index-button {
-  font-size: 1rem;
-  transition: font-size 0.2s;
-}
-
-.index-button:hover {
-  font-family: "Fragment-Sans-Bold";
-  font-size: 1.1rem;
-  border-bottom: none;
-}
-
-.project-title-field-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .empty-button {
@@ -197,41 +78,31 @@ button:hover {
   height: 10px;
 }
 
-table {
-  font-family: "Fragment-Sans-Light";
-  margin-top: 20px;
-  padding: 0 10px;
-  border: 0.5px black solid;
-  border-radius: 0.7rem;
-  font-size: 0.7rem;
-  width: 100%;
-}
-
-.project-title {
-  font-family: "Fragment-Sans-Bold";
-}
-
 thead {
-  font-family: "Fragment-Sans-Bold";
+  font-family: "Documen-Light";
   text-align: center;
   width: 30%;
 }
 
 td {
-  padding: 0.3rem 0;
+  padding: 0.1rem 0;
   text-align: center;
 }
 
-.column-1 {
-  text-align: left;
+.slider[type="range"] {
+  -webkit-appearance: slider-vertical;
+  width: 10px;
+  height: 40px;
+  padding: 0 5px;
 }
 
-tfoot {
-  font-family: "Fragment-Sans-Regular";
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
 }
 
-.actions-button-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+.slider[type="range"]::-webkit-slider-runnable-track {
+  background-color: rgb(0, 255, 0);
+  border: 1px solid black;
+  height: 100%;
+  width: 8px;
 }
