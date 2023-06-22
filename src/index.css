@@ -23,10 +23,11 @@
 .logo-text {
   font-family: "Dazzed-Regular";
   writing-mode: vertical-rl;
+  font-size: 1.2rem;
 }
 
 h1 {
-  font-family: "Documen-Light";
+  font-family: "Dazzed-Bold";
   font-size: 2rem;
   margin: 0;
   padding: 0;
