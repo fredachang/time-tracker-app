@@ -7,12 +7,11 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import { ClickButton } from "./components/ClickButton";
-import { ScrollingCarousel } from "@trendyol-js/react-carousel";
 import RandomBoxAnimation from "./components/RandomBoxAnimation";
-
 import { LineIntersection } from "./components/LineIntersection";
 import { ProjectTile } from "./components/ProjectTile";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { fadeXY } from "./animations";
 
 function App() {
   const [projects, setProjects] = useLocalStorage<Project[]>(
@@ -36,7 +35,6 @@ function App() {
   const [theme, setTheme] = useState<string>("light");
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isVisible, setIsVisible] = useState(true);
 
   const projectsDeault = projects ?? initialProjects;
   const projectNameDefault = projectName ?? "";
@@ -307,7 +305,7 @@ function App() {
                     viewBox="-5 -5 60 60"
                     svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
                     theme={theme}
-                    onClick={() => undoDeleteProject}
+                    onClick={undoDeleteProject}
                   />
                 </div>
               )}
@@ -321,31 +319,43 @@ function App() {
                 viewBox="-5 -5 60 60"
                 svgPath="m41.93,25c0,9.35-7.58,16.93-16.93,16.93s-16.93-7.58-16.93-16.93S15.65,8.07,25,8.07s16.93,7.58,16.93,16.93Zm-16.93-8.5c-4.69,0-8.5,3.8-8.5,8.5s3.8,8.5,8.5,8.5,8.5-3.8,8.5-8.5-3.8-8.5-8.5-8.5Z"
                 theme={theme}
-                onClick={() => clearAllHours}
+                onClick={clearAllHours}
               />
             </span>
           </div>
         </section>
 
-        <section id="pie-chart" className="flex w-full">
-          <ScrollingCarousel>
-            {projectsDeault.map((project) => {
-              const pieChartData = makePieChartData(project);
-              return (
-                <ProjectTile
-                  key={project.id}
-                  project={project}
-                  calculateTotalHours={calculateTotalHours}
-                  pieChartData={pieChartData}
-                  theme={theme}
-                  updateProjectName={updateProjectName}
-                  deleteProject={deleteProject}
-                  clearProjectHours={clearProjectHours}
-                  isVisible={isVisible}
-                />
-              );
-            })}
-          </ScrollingCarousel>
+        <section
+          id="pie-chart"
+          className="flex w-full overflow-x-scroll overflow-y-hidden mb-5"
+        >
+          <div className={theme === "light" ? "scroll-light" : "scroll-dark"}>
+            <AnimatePresence>
+              {projectsDeault.map((project) => {
+                const pieChartData = makePieChartData(project);
+                return (
+                  <motion.div
+                    key={project.id}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={fadeXY}
+                  >
+                    <ProjectTile
+                      key={project.id}
+                      project={project}
+                      calculateTotalHours={calculateTotalHours}
+                      pieChartData={pieChartData}
+                      theme={theme}
+                      updateProjectName={updateProjectName}
+                      deleteProject={deleteProject}
+                      clearProjectHours={clearProjectHours}
+                    />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
         </section>
 
         <section

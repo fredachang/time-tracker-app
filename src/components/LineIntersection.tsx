@@ -1,5 +1,10 @@
+interface MousePosition {
+  x: number;
+  y: number;
+}
+
 interface Props {
-  mousePosition: { x: number; y: number };
+  mousePosition: MousePosition;
   theme: string;
 }
 
@@ -10,7 +15,7 @@ export const LineIntersection = (props: Props) => {
 
   const emptySpace = 120;
 
-  const emptyCoordinates = ({ x, y }, emptySpace: number) => ({
+  const emptyCoordinates = ({ x, y }: MousePosition, emptySpace: number) => ({
     verticalTop: y - emptySpace,
     verticalBottom: y + emptySpace,
     horizontalLeft: x - emptySpace,

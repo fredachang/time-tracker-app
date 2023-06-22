@@ -13,11 +13,10 @@ interface Props {
       borderWidth: number;
     }[];
   };
-  theme: string;
 }
 
 export function PieChart(props: Props) {
-  const { theme, data } = props;
+  const { data } = props;
 
   return (
     <div className="donut">
