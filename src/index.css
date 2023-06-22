@@ -15,38 +15,61 @@
 }
 
 @font-face {
+  font-family: "Dazzed-SemiBold";
+  src: local("Dzzed"),
+    url("public/Fonts/DazzedTRIAL-SemiBold.woff2") format("truetype");
+}
+
+@font-face {
+  font-family: "Dazzed-Medium";
+  src: local("Dzzed"),
+    url("public/Fonts/DazzedTRIAL-Medium.woff2") format("truetype");
+}
+
+@font-face {
   font-family: "Documen-Light";
   src: local("Documen"),
     url("/Fonts-2/DocumanTRIAL-Light.woff2") format("truetype");
 }
 
+@font-face {
+  font-family: "Pitch-Sans-Light";
+  src: local("Pitch"),
+    url("/Font-Pitch-Sans/test-pitch-sans-light.woff2") format("truetype");
+}
+
 .logo-text {
-  font-family: "Dazzed-Regular";
-  writing-mode: vertical-rl;
-  font-size: 1.2rem;
+  font-family: "Dazzed-Bold";
+  font-size: 3rem;
 }
 
 h1 {
-  font-family: "Dazzed-Bold";
+  font-family: "Pitch-Sans-Light";
   font-size: 2rem;
   margin: 0;
   padding: 0;
 }
 
 h2 {
-  font-family: "Documen-Light";
+  font-family: "Pitch-Sans-Light";
   font-size: 1.2rem;
   margin: 0 0 0.5rem 0;
 }
 
-h3 {
-  font-family: "Documen-Light";
+.project-tile-title {
+  font-family: "Pitch-Sans-Light";
   font-size: 1rem;
 }
 
+h3 {
+  font-family: "Pitch-Sans-Light";
+  font-size: 0.8rem;
+}
+
 p {
-  font-family: "Documen-Light";
+  font-family: "Pitch-Sans-Light";
   font-size: 0.7rem;
+  line-height: 0.8rem;
 }
 
 .canvas {
@@ -78,12 +101,16 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 thead {
-  font-family: "Documen-Light";
+  font-family: "Pitch-Sans-Light";
+  font-size: 0.8rem;
+
   text-align: center;
   width: 30%;
 }
 
 td {
+  font-family: "Pitch-Sans-Light";
+  font-size: 0.8rem;
   padding: 0.1rem 0;
   text-align: center;
 }

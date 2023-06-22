@@ -269,7 +269,7 @@ function App() {
 
       <section
         id="header"
-        className="bg-green z-0 text-black dark:bg-black dark:text-green flex flex-col w-5% h-full py-5 justify-between items-center fixed"
+        className="bg-green z-0 text-black dark:bg-black dark:text-green flex flex-col w-5% h-full pb-5 justify-between items-center fixed"
       >
         <Header theme={theme} handleThemeChange={handleThemeChange} />
       </section>
@@ -327,7 +327,7 @@ function App() {
 
         <section
           id="pie-chart"
-          className="flex w-full overflow-x-scroll overflow-y-hidden mb-5"
+          className="flex w-full overflow-x-scroll overflow-y-hidden"
         >
           <div className={theme === "light" ? "scroll-light" : "scroll-dark"}>
             <AnimatePresence>

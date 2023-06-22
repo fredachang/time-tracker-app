@@ -27,9 +27,11 @@ export function Form(props: Props) {
   return (
     <>
       <form onSubmit={(e) => createNewProject(e)} className="w-full">
-        <div className="flex w-3/5 justify-between items-center m-0">
+        <div className="flex w-4/5 justify-between items-center m-0">
           <div className="pl-2 w-3/5 text-base">
-            <label htmlFor="new-project-name-input">PROJECT NAME:</label>
+            <label htmlFor="new-project-name-input">
+              <p>PROJECT NAME:</p>
+            </label>
             <input
               className={theme === "light" ? inputStyleLight : inputStyleDark}
               id="new-project-name-input"
@@ -41,7 +43,9 @@ export function Form(props: Props) {
           </div>
 
           <div className="pl-2 w-2/5 text-base border-l border-black dark:border-l dark:border-green">
-            <label htmlFor="new-target-hour-input">TARGET HOURS:</label>
+            <label htmlFor="new-target-hour-input">
+              <p>TARGET HOURS:</p>
+            </label>
             <input
               className={theme === "light" ? inputStyleLight : inputStyleDark}
               id="new-target-hour-input"

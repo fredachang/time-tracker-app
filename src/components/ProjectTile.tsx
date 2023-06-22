@@ -64,13 +64,14 @@ export function ProjectTile(props: Props) {
 
           <div
             id="donut-container"
-            className="flex relative justify-center items-center p-5 mx-2 my-4"
+            className="flex relative justify-center items-center py-10 my-4"
           >
             <div id="total-hours" className="flex absolute ">
               <h1>{calculateTotalHours(project)}</h1>
-              <span>H</span>
+              <span>
+                <p>H</p>
+              </span>
             </div>
-
             <PieChart data={pieChartData} />
           </div>
 
@@ -78,14 +79,16 @@ export function ProjectTile(props: Props) {
             id="project-title-container"
             className="flex justify-between pl-2 pb-1"
           >
-            <input
-              type="text"
-              value={project.title}
-              onChange={(e) => {
-                updateProjectName(project.id, e.target.value);
-              }}
-              className={theme === "light" ? inputStyleLight : inputStyleDark}
-            />
+            <div className="project-tile-title">
+              <input
+                type="text"
+                value={project.title}
+                onChange={(e) => {
+                  updateProjectName(project.id, e.target.value);
+                }}
+                className={theme === "light" ? inputStyleLight : inputStyleDark}
+              ></input>
+            </div>
 
             <div>
               <div className="flex justify-end">

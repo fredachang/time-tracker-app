@@ -22,7 +22,7 @@ export function SubmitButton(props: Props) {
   };
 
   return (
-    <div className="flex">
+    <div className="flex w-1/5">
       <button
         className="bg-transparent w-7 h-7 p-0 border-0"
         title={title}
@@ -48,7 +48,9 @@ export function SubmitButton(props: Props) {
           />
         </svg>
       </button>
-      <div className="relative r-3 text-sm">{text}</div>
+      <div className="relative r-3">
+        <p>{text}</p>
+      </div>
     </div>
   );
 }

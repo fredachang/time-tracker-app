@@ -50,7 +50,9 @@ export function ClickButton(props: Props) {
           />
         </svg>
       </button>
-      <div className="relative r-3 text-sm">{text}</div>
+      <div className="relative">
+        <p>{text}</p>
+      </div>
     </div>
   );
 }
