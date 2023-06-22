@@ -1,25 +1,23 @@
 @font-face {
   font-family: "Dazzed-Light";
-  src: local("Dzzed"),
-    url("/public/Fonts/DazzedTRIAL-Light.woff2") format("truetype");
+  src: local("Dzzed"), url("/Fonts/DazzedTRIAL-Light.woff2") format("truetype");
 }
 
 @font-face {
   font-family: "Dazzed-Regular";
   src: local("Dzzed"),
-    url("/public/Fonts/DazzedTRIAL-Regular.woff2") format("truetype");
+    url("/Fonts/DazzedTRIAL-Regular.woff2") format("truetype");
 }
 
 @font-face {
   font-family: "Dazzed-Bold";
-  src: local("Dzzed"),
-    url("/public/Fonts/DazzedTRIAL-Bold.woff2") format("truetype");
+  src: local("Dzzed"), url("/Fonts/DazzedTRIAL-Bold.woff2") format("truetype");
 }
 
 @font-face {
   font-family: "Documen-Light";
   src: local("Documen"),
-    url("/public/Fonts-2/DocumanTRIAL-Light.woff2") format("truetype");
+    url("/Fonts-2/DocumanTRIAL-Light.woff2") format("truetype");
 }
 
 .logo-text {
