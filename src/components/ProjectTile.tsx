@@ -67,7 +67,7 @@ export function ProjectTile(props: Props) {
             className="flex relative justify-center items-center py-6"
           >
             <div id="total-hours" className="flex absolute ">
-              <h1>{calculateTotalHours(project)}</h1>
+              <h1 className="text-2xl">{calculateTotalHours(project)}</h1>
               <span>
                 <p>H</p>
               </span>
