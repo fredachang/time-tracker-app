@@ -28,7 +28,7 @@ export function Header(props: Props) {
         <h1 className="logo-text">T</h1>
 
         <div className="flex justify-center items-center w-60 -rotate-90">
-          <h1>{formattedTime}</h1>
+          <h1 className="text-4xl">{formattedTime}</h1>
         </div>
 
         <div className="h-3/5 flex flex-col justify-end">

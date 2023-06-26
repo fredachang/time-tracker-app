@@ -59,6 +59,7 @@ export const HourInput = (props: Props) => {
 
           <div className="w-full flex justify-start">
             {renderDividers(project.time[0][dayKey])}
+            <p>({project.time[0][dayKey]})</p>
           </div>
 
           <button

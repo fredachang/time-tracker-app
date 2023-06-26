@@ -64,7 +64,7 @@ export function ProjectTile(props: Props) {
 
           <div
             id="donut-container"
-            className="flex relative justify-center items-center py-10 my-4"
+            className="flex relative justify-center items-center py-6"
           >
             <div id="total-hours" className="flex absolute ">
               <h1>{calculateTotalHours(project)}</h1>

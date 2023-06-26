@@ -267,10 +267,7 @@ function App() {
         </div>
       </section>
 
-      <section
-        id="header"
-        className="bg-green z-0 text-black dark:bg-black dark:text-green flex flex-col w-5% h-full pb-5 justify-between items-center fixed"
-      >
+      <section id="header">
         <Header theme={theme} handleThemeChange={handleThemeChange} />
       </section>
 

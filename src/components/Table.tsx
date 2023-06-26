@@ -128,6 +128,7 @@ export function Table(props: Props) {
 
                     <div className="w-full flex justify-start">
                       {renderDividers(project.targetHours)}
+                      <p>({project.targetHours})</p>
                     </div>
 
                     <button
