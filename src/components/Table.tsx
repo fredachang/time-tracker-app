@@ -154,6 +154,7 @@ export function Table(props: Props) {
             <td className="text-left">MON</td>
             {projects.map((project) => (
               <HourInput
+                theme={theme}
                 key={project.id}
                 project={project}
                 handleHourInput={(id, newHours, dayKey) =>
@@ -168,6 +169,7 @@ export function Table(props: Props) {
             <td className="text-left">TUE</td>
             {projects.map((project) => (
               <HourInput
+                theme={theme}
                 key={project.id}
                 project={project}
                 handleHourInput={(id, newHours, dayKey) =>
@@ -182,6 +184,7 @@ export function Table(props: Props) {
             <td className="text-left">WED</td>
             {projects.map((project) => (
               <HourInput
+                theme={theme}
                 key={project.id}
                 project={project}
                 handleHourInput={(id, newHours, dayKey) =>
@@ -196,6 +199,7 @@ export function Table(props: Props) {
             <td className="text-left">THU</td>
             {projects.map((project) => (
               <HourInput
+                theme={theme}
                 key={project.id}
                 project={project}
                 handleHourInput={(id, newHours, dayKey) =>
@@ -210,6 +214,7 @@ export function Table(props: Props) {
             <td className="text-left">FRI</td>
             {projects.map((project) => (
               <HourInput
+                theme={theme}
                 key={project.id}
                 project={project}
                 handleHourInput={(id, newHours, dayKey) =>
@@ -224,6 +229,7 @@ export function Table(props: Props) {
             <td className="text-left">SAT</td>
             {projects.map((project) => (
               <HourInput
+                theme={theme}
                 key={project.id}
                 project={project}
                 handleHourInput={(id, newHours, dayKey) =>
@@ -238,6 +244,7 @@ export function Table(props: Props) {
             <td className="text-left">SUN</td>
             {projects.map((project) => (
               <HourInput
+                theme={theme}
                 key={project.id}
                 project={project}
                 handleHourInput={(id, newHours, dayKey) =>
