@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { DayKey, Project } from "../data";
-import { differenceInSeconds, format, intervalToDuration } from "date-fns";
 
 interface Props {
   project: Project;
@@ -8,51 +6,23 @@ interface Props {
   dayKey: DayKey;
 }
 
-const setSeconds = 30 * 60;
-
-export const HourInput = (props: Props) => {
+export const HourInputBackUp = (props: Props) => {
   const { project, handleHourInput, dayKey } = props;
-  const [count, setCount] = useState(setSeconds);
-  const [isPaused, setIsPaused] = useState(true);
 
-  const formatCount = (timeInSeconds: number) => {
-    const formatted = format(timeInSeconds * 1000, "mm:ss");
-    return formatted;
-  };
+  // const renderDividers = (hours: number) => {
+  //   const numDividers = hours / 0.5;
+  //   const dividers = [];
 
-  useEffect(() => {
-    let timerId;
+  //   for (let i = 0; i < numDividers; i++) {
+  //     dividers.push(
+  //       <div className="time-marks" key={i}>
+  //         |
+  //       </div>
+  //     );
+  //   }
 
-    if (!isPaused) {
-      timerId = setInterval(() => {
-        setCount((prevCount) => prevCount - 1);
-      }, 1000);
-    }
-
-    if (count === 0) {
-      clearInterval(timerId);
-      handleHourInput(
-        project.id,
-        Number(project.time[0][dayKey]) + 0.5,
-        dayKey
-      );
-    }
-
-    return () => {
-      clearInterval(timerId);
-    };
-  }, [count, isPaused]);
-
-  const handleStart = () => {
-    if (count === 0) {
-      setCount(5);
-    }
-    setIsPaused(false);
-  };
-
-  const handlePause = () => {
-    setIsPaused(true);
-  };
+  //   return dividers;
+  // };
 
   const renderDividers = (hours: number) => {
     const numDividers = hours / 0.5;
@@ -66,6 +36,7 @@ export const HourInput = (props: Props) => {
         </div>
       );
     }
+
     return dividers;
   };
 
@@ -103,15 +74,6 @@ export const HourInput = (props: Props) => {
           >
             +
           </button>
-        </div>
-
-        <div className="flex">
-          <p className="mx-5">{formatCount(count)}</p>
-          {count === setSeconds || count === 0 || isPaused ? (
-            <button onClick={handleStart}>Start</button>
-          ) : (
-            <button onClick={handlePause}>Pause</button>
-          )}
         </div>
       </div>
     </td>
