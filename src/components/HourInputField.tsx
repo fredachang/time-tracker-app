@@ -68,7 +68,7 @@ export const HourInput = (props: Props) => {
 
   const handleStart = () => {
     if (count === 0) {
-      setCount(5);
+      setCount(pomodoroSlot);
     }
     setIsPaused(false);
     setIsStarted(true);
