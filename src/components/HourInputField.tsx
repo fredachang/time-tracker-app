@@ -33,7 +33,7 @@ export const HourInput = (props: Props) => {
     if (!isPaused) {
       timerId = setInterval(() => {
         setCount((prevCount) => prevCount - 1);
-      }, 1000);
+      }, 100);
     }
 
     if (count === 0) {
@@ -55,7 +55,7 @@ export const HourInput = (props: Props) => {
   useEffect(() => {
     if (isStarted) {
       const formattedCount = formatCount(count);
-      document.title = `Working: ${formattedCount}`;
+      document.title = `${formattedCount}`;
     }
   }, [count, isStarted]);
 
