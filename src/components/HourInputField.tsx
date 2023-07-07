@@ -33,7 +33,7 @@ export const HourInput = (props: Props) => {
     if (!isPaused) {
       timerId = setInterval(() => {
         setCount((prevCount) => prevCount - 1);
-      }, 100);
+      }, 1000);
     }
 
     if (count === 0) {
