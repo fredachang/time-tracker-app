@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { DayKey, Project } from "../data";
 import { format } from "date-fns";
-import { useCountdownTimer } from "use-countdown-timer";
 
 interface Props {
   project: Project;
@@ -10,61 +9,55 @@ interface Props {
   theme: string;
 }
 
-const pomodoroSlot = 60 * 30;
+const minutesToSeconds = (minutes: number) => minutes * 60;
+
+const pomodoroSlot = minutesToSeconds(30);
 
 const alertSound = new Audio("alert.wav");
 
-const formatCount = (MiliSeconds: number) => {
-  const formatted = format(MiliSeconds, "mm:ss");
+const formatCount = (timeInSeconds: number) => {
+  const formatted = format(timeInSeconds * 1000, "mm:ss");
   return formatted;
 };
 
 export const HourInput = (props: Props) => {
   const { project, handleHourInput, dayKey } = props;
+  const [count, setCount] = useState(pomodoroSlot);
+  const [isStarted, setIsStarted] = useState(false);
+  const [isPaused, setIsPaused] = useState(true);
   const [playAlert, setPlayAlert] = useState(false);
-  const [showTimer, setShowTimer] = useState<boolean>(false);
-  const [showStartButton, setShowStartButton] = useState<boolean>(false);
-
-  const { countdown, start, reset, pause, isRunning } = useCountdownTimer({
-    timer: 1000 * pomodoroSlot,
-    interval: 1000,
-  });
-
-  const startTimer = () => {
-    start();
-    setShowTimer(true);
-  };
-
-  const pauseTimer = () => {
-    pause();
-    setShowStartButton(true);
-    setShowTimer(true);
-  };
-
-  const resetTimer = () => {
-    reset();
-    setShowStartButton(true);
-    setShowTimer(true);
-  };
 
   useEffect(() => {
-    if (countdown === 0) {
-      setShowTimer(false);
+    let timerId: number | undefined = undefined;
+
+    if (!isPaused) {
+      timerId = setInterval(() => {
+        setCount((prevCount) => prevCount - 1);
+      }, 1000);
+    }
+
+    if (count === 0) {
+      clearInterval(timerId);
       setPlayAlert(true);
+      setIsStarted(false);
       handleHourInput(
         project.id,
         Number(project.time[0][dayKey]) + 0.5,
         dayKey
       );
     }
-  }, [countdown]);
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, [count, isPaused]);
 
   useEffect(() => {
-    if (isRunning) {
-      const formattedCount = countdown;
+    if (isStarted) {
+      const formattedCount = formatCount(count);
       document.title = `${formattedCount}`;
     }
-  }, [countdown, isRunning]);
+  }, [count, isStarted]);
 
   useEffect(() => {
     if (playAlert) {
@@ -72,6 +65,18 @@ export const HourInput = (props: Props) => {
       setPlayAlert(false);
     }
   }, [playAlert]);
+
+  const handleStart = () => {
+    if (count === 0) {
+      setCount(pomodoroSlot);
+    }
+    setIsPaused(false);
+    setIsStarted(true);
+  };
+
+  const handlePause = () => {
+    setIsPaused(true);
+  };
 
   const renderDividers = (hours: number) => {
     const numDividers = hours / 0.5;
@@ -126,21 +131,25 @@ export const HourInput = (props: Props) => {
           </div>
 
           <div className="flex">
-            <button onClick={startTimer}>Start</button>
+            {count === pomodoroSlot || count === 0 || isPaused ? (
+              <button onClick={handleStart}>Start</button>
+            ) : (
+              <button onClick={handlePause}>Pause</button>
+            )}
           </div>
         </div>
 
-        {showTimer && (
+        {isStarted && (
           <div
             id="count-display"
-            className="bg-green dark:bg-black border border-black dark:bg-green dark:text-black flex flex-col fixed top-0 right-0 justify-center items-center"
+            className="bg-green dark:bg-black border border-black dark:bg-green dark:text-black flex fixed top-0 right-0 justify-center items-center"
           >
-            <p className="text-9xl">{formatCount(countdown)}</p>
-            <div className="flex w-full justify-between">
-              {showStartButton && <button onClick={startTimer}>Start</button>}
-              <button onClick={pauseTimer}>Pause</button>
-              <button onClick={resetTimer}>Reset</button>
-            </div>
+            <p className="text-9xl">{formatCount(count)}</p>
+            {count === pomodoroSlot || count === 0 || isPaused ? (
+              <button onClick={handleStart}>Start</button>
+            ) : (
+              <button onClick={handlePause}>Pause</button>
+            )}
           </div>
         )}
       </td>
