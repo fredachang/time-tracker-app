@@ -61,7 +61,7 @@ export const HourInput = (props: Props) => {
 
   useEffect(() => {
     if (isRunning) {
-      const formattedCount = countdown;
+      const formattedCount = formatCount(countdown);
       document.title = `${formattedCount}`;
     }
   }, [countdown, isRunning]);
