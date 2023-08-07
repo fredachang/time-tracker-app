@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { DayKey, Project } from "../data";
-import { format } from "date-fns";
 import { useCountdownTimer } from "use-countdown-timer";
+import { formatCount } from "../utils";
+import { Timer } from "./Timer";
 
 interface Props {
   project: Project;
@@ -13,11 +14,6 @@ interface Props {
 const pomodoroSlot = 60 * 30;
 
 const alertSound = new Audio("alert.wav");
-
-const formatCount = (MiliSeconds: number) => {
-  const formatted = format(MiliSeconds, "mm:ss");
-  return formatted;
-};
 
 export const HourInput = (props: Props) => {
   const { project, handleHourInput, dayKey } = props;
@@ -131,17 +127,13 @@ export const HourInput = (props: Props) => {
         </div>
 
         {showTimer && (
-          <div
-            id="count-display"
-            className="bg-green dark:bg-black border border-black dark:bg-green dark:text-black flex flex-col fixed top-0 right-0 justify-center items-center"
-          >
-            <p className="text-9xl">{formatCount(countdown)}</p>
-            <div className="flex w-full justify-between">
-              {showStartButton && <button onClick={startTimer}>Start</button>}
-              <button onClick={pauseTimer}>Pause</button>
-              <button onClick={resetTimer}>Reset</button>
-            </div>
-          </div>
+          <Timer
+            countdown={countdown}
+            showStartButton={showStartButton}
+            startTimer={startTimer}
+            pauseTimer={pauseTimer}
+            resetTimer={resetTimer}
+          />
         )}
       </td>
     </>
