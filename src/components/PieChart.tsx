@@ -31,7 +31,7 @@ export function PieChart(props: Props) {
       ></div>
       <div
         id="bottom-line"
-        className="bg-black dark:bg-green w-px h-14 flex absolute left-1/2 bottom-30px"
+        className="bg-black dark:bg-green w-px h-14 flex absolute left-1/2 bottom-[18px]"
       ></div>
     </div>
   );
