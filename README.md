@@ -8,7 +8,10 @@ Lastly, I implemented an optional 30 minutes timer with a ring tone inspired by 
 
 The time data is stored via React use-local-storage and is designed to be refreshed on a weekly basis as the primary objective is to track short-term goals rather than having a full view of historical data. 
 
+Check out the [Live Site](https://freda-time-tracker-app.netlify.app/)! 
+
+
 https://github.com/fredachang/time-tracker-app/assets/128881398/dc71ec91-1891-4782-a2fe-cb060a7055ed
 
-Live site: https://freda-time-tracker-app.netlify.app/
+
 
